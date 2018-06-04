@@ -11,11 +11,21 @@ function generalChanges(){
 	$('nav.navbar').addClass('navbar-fixed-top');
 	$('div.wrapper').css('padding-top', '60px');
 
+	$('a.navbar-brand').attr('href', 'https://memo.cash/posts/personalized?range=24h');
+
 	$('li a:contains("New")').css('font-weight','bold');
 
 	$('a:contains("Dashboard")').hide();
 
 	$('a:contains("Settings")').parent().before('<li><a href="/">Dashboard</a></li>');
+
+	var notif = Number($('li.notifications a').first().text().replace(/\s/g,''));
+	if(notif != 0){
+		var title = $(document).attr('title');
+		title = '('+notif+') '+title;
+		$(document).attr('title', title);
+		$('li.notifications a').css('color', 'red');
+	}
 }
 
 /*
