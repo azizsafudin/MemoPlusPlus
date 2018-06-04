@@ -7,6 +7,8 @@ Simple extension with minor improvements to [memo.cash](https://memo.cash/profil
 ![muted user](https://i.imgur.com/vjrgpKh.png)
 ### Fancy polls
 ![fancy polls](https://i.imgur.com/QOVtCDj.png)
+### Notification Badge
+![notification badge](https://i.imgur.com/VHy8vch.png)
 ### Minor UI adjustments
 + Moved dashboard link to dropdown menu.
 + Home page goes to personalised feed instead of dashboard.
