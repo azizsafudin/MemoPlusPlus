@@ -5,8 +5,6 @@ $(document).ready(function() {
 	$("body").fadeIn(100);		//	Fade in.
 });
 
-
-
 function generalChanges(){
 	$('nav.navbar').addClass('navbar-fixed-top');
 	$('div.wrapper').css('padding-top', '60px');
@@ -19,12 +17,15 @@ function generalChanges(){
 
 	$('a:contains("Settings")').parent().before('<li><a href="/">Dashboard</a></li>');
 
+	
 	var notif = Number($('li.notifications a').first().text().replace(/\s/g,''));
 	if(notif != 0){
 		var title = $(document).attr('title');
+		var favicon = new Favico({animation :'slide'});		//	favico.js is lit.
 		title = '('+notif+') '+title;
 		$(document).attr('title', title);
 		$('li.notifications a').css('color', 'red');
+		favicon.badge(notif);
 	}
 }
 
