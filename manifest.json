@@ -4,10 +4,12 @@
   "name": "Memo++",
   "version": "0.2.0",
   "description": "Memo.cash extension",
- 
-  "permissions": [
-    "storage"
-  ],
+  "icons": 
+  {
+    "16": "ext_16.png",
+    "48": "ext_48.png",
+    "128": "ext_128.png" 
+  },
   "content_scripts": [{
     "css": ["styles.css"],
     "js": ["jquery.min.js", "content.js", "favico.min.js"],
