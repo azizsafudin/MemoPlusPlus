@@ -10,6 +10,10 @@
     "48": "ext_48.png",
     "128": "ext_128.png" 
   },
+  "permissions": [
+    "https://publish.twitter.com/*",
+    "https://api.instagram.com/*",
+  ],
   "content_scripts": [{
     "css": ["styles.css"],
     "js": ["jquery.min.js", "content.js", "favico.min.js"],
