@@ -4,6 +4,7 @@ $(document).ready(function() {
 	settings();
 	generalChanges();
 	parseMemos();
+	neverEndingMemo();
 	$("body").fadeIn(150);		//	Fade in.
 });
 
@@ -27,6 +28,9 @@ const default_prefs =  	{
 							'default_topics' : 'all',
 						}
 
+/*
+	Main function applying general UI changes.
+*/
 function generalChanges(){
 	var settings = getSettings();
 	$('nav.navbar').addClass('navbar-fixed-top');
@@ -49,7 +53,7 @@ function generalChanges(){
 		favicon.badge(notif);
 	}
 
-	//Make changes to UI based on settings.
+	//	Make changes to UI based on settings.
 	$('a:contains("Posts")').attr('href', base_url + urls.posts[settings.default_posts] );
 	$('a:contains("Topics")').attr('href', base_url + urls.topics[settings.default_topics] );
 }
@@ -76,7 +80,7 @@ function settings(){
 
 	if(window.location.href.indexOf("/settings") > -1) {
 
-	//Just hard code this. No biggie.
+	//	Just hard code this. No biggie.
 	var template_start =	'<h2>Memo++ settings</h2><br><form id="memo-settings-form" class="form-horizontal">';
 	var settings_0 =		'<div class="form-group row">' +
 							'<label class="col-form-label col-sm-3">Default Posts Tab</label>' +
@@ -120,15 +124,17 @@ function settings(){
 	var template_end =		'</form>';
 
 	var template = template_start + settings_0 + settings_1 + save_btn + template_end;
-	$('#settings-form').after(template);	//add form after memo's default form
+
+	$('#settings-form').after(template);									//	add form after memo's default form
 		
-	$('[value="'+settings.default_posts+'"]').prop('checked', true);		//set checked based on current settings
+	$('[value="'+settings.default_posts+'"]').prop('checked', true);		//	set checked based on current settings
 	$('[value="'+settings.default_topics+'"]').prop('checked', true);
 
-	//Save settings to localStorage.
-	$('#memo-save').on('click', function(e) {
+
+	$('#memo-save').on('click', function(e) {								//	Save settings to localStorage.
 		e.preventDefault();
-		var posts = $('[name="default-posts"]:checked').val();
+
+		var posts = $('[name="default-posts"]:checked').val();				//	Get values from form.
 		var topics = $('[name="default-topics"]:checked').val();
 
 		settings.default_posts = posts;
@@ -145,73 +151,84 @@ function settings(){
 /*
 	Main muteUser method.
 */
-function muteUsers(){
-	const mute_btn = '<button type="button" class="btn btn-danger btn-sm memo-mute">Mute</button>';
-	const hidden_0 = '<div class="post-header"><p class="name" style="padding:0.5em;"><span class="memo-name">';
-	const hidden_1 = '</span><span> has been muted.</span><button type="button" class="memo-unmute btn btn-info btn-sm" style="margin-left:1em;">Unmute</button></p></div>';
-	
-	var list = localStorage.getItem('memo-list');
+function muteUsers(){	
+	var list = getMuteList();
 
-	if(list === null || list === undefined)	localStorage.setItem('memo-list', JSON.stringify([]));
-
-	$('p.name').append(mute_btn);									//	Add mute button.
+	addMuteButton();
+	hideMutedUsers();
 
 	$('button.memo-mute').click(function(e) {						//	Handle mute button click.
 		e.preventDefault();
 		var name = $(this).siblings('a.profile').text();
 		mute(name);
 	});	
-
-	$(document).on('click', 'button.memo-unmute',function(e) {		//	Handle unmute button click.
+	
+	$('button.memo-unmute').click(function(e) {						//	Handle unmute button click.
 		e.preventDefault();
 		var name = $(this).siblings('span.memo-name').text();
 		unmute(name);
-	});	
+	});
+}
+
+function addMuteButton(){
+	const mute_btn = '<button type="button" class="btn btn-danger btn-sm memo-mute">Mute</button>';
+	$('p.name').each(function(index){
+		var name = $(this).find('a.profile, .memo-name').first().text();
+		if(!isMuted(name) && $(this).children('button.memo-mute').length === 0){	//	only add mute button if it doesn't already exist and user not muted.
+			$(this).append(mute_btn);
+		}
+	});
+}
+/*
+	Get mute list
+*/
+function getMuteList(){
+	var list = localStorage.getItem('memo-list');
+	if(!list){
+		localStorage.setItem('memo-list', JSON.stringify([]));
+		return [];
+	}
+	return JSON.parse(list);
+}
+
+function hideMutedUsers(){
+	const hidden_0 = '<div class="post-header memo-muted-user"><p class="name" style="padding:0.5em;"><span class="memo-name">';
+	const hidden_1 = '</span><span> has been muted.</span><button type="button" class="memo-unmute btn btn-info btn-sm" style="margin-left:1em;">Unmute</button></p></div>';
 
 	$('div.post').each(function(index) {
 		var name = $(this).find('a.profile').first().text();
-		if(isMuted(name)){
+		if(isMuted(name) && $(this).children('div.memo-muted-user').length === 0){
 			var string = hidden_0 + name + hidden_1;
 			$(this).children().not('div.post').not('script').remove();	//delete all child elements except script and div.post
 			$(this).prepend(string);
 		}
-	});	
+	});		
 }
 
 /*
 	Adds user's name to mute list
 */
 function mute(name){
-	var list = localStorage.getItem('memo-list');
-	if(list === undefined || list === null){
-		list = [];
-	}else{
-		list = JSON.parse(list);
-	}
+	var list = getMuteList();
+
 	if(!isMuted(name)) {
 		list.push(name);
 		localStorage.setItem('memo-list', JSON.stringify(list));
-		// alert(name + ' muted.');
 		location.reload();
-	}else{
-		alert(name + ' is already muted.');
-	}	
+	}
 }
 
 /*
 	Removes user's name from mute list
 */
 function unmute(name){
-	var list = localStorage.getItem('memo-list');
-	if(list !== null || list !== undefined){
-		list = JSON.parse(list);
-		var index = list.indexOf(name);
-		if (index > -1) {
-			list.splice(index, 1);
-			localStorage.setItem('memo-list', JSON.stringify(list));
-			// alert(name + ' is unmuted.');
-			location.reload();
-		}
+	var list = getMuteList()
+
+	var index = list.indexOf(name);
+	if (index > -1) {
+		list.splice(index, 1);
+		localStorage.setItem('memo-list', JSON.stringify(list));
+		location.reload();
 	}
 }
 
@@ -219,8 +236,7 @@ function unmute(name){
 	Returns whether a user is in mute list.
 */
 function isMuted(name){
-	var list = localStorage.getItem('memo-list');	
-	list = JSON.parse(list);
+	var list = getMuteList();
 	return list.indexOf(name) > -1;
 }
 
@@ -233,7 +249,7 @@ function fancyPolls(){
 			var totalVotes = 0;
 			$(this).children('tr').each(function(index){
 				var votes = $(this).children('td').eq(1).text().split(' votes');
-				totalVotes += Number(votes[0]);	//get total number of votes
+				totalVotes += Number(votes[0]);											//	get total number of votes
 			});
 			$(this).children('tr').each(function(index){
 				var votes = $(this).children('td').eq(1).text().split(' votes');
@@ -253,14 +269,13 @@ function fancyPolls(){
 /*
 	General method that loops through all memos on the page.
 */
-
 function parseMemos(){
 	$('.message').each(function(){
 		var context = $(this);
 		nameTag(context);
 	});
 
-	//searching through all links
+	//	searching through all links
 	$('a').each(function(){
 		var context = $(this);
 		twitterEmbed(context);
@@ -306,6 +321,45 @@ function instagramEmbed(context){
 		$.get('https://api.instagram.com/oembed?maxwidth=500&url='+matched[0], function(res) {
 			var out = text.replace(regex, res.html); 
 			context.replaceWith(out);
+		});
+	}
+}
+
+function neverEndingMemo(){
+	var triggered = false;
+	if(window.location.href.indexOf('/posts') > -1){
+
+		$('p.pagination').last().remove();					//	remove bottom pagination menu.
+
+		var url = new URL(location.href);					//	construct URL for get request.
+
+		var offset = url.searchParams.get('offset');		//	get current offset from URL
+		if(!offset) offset = 0;								//	set offset to 0 if URL does not have the offset.
+		else offset = Number(offset);						//	set offset to int.
+		
+		$(window).on("scroll", function() {
+			var scrollHeight = $(document).height();
+			var scrollPosition = $(window).scrollTop();
+			if ((scrollHeight - scrollPosition) < 800) {		//	this is the only thing that worked for me. 800 is arbitrary. Can't be less than 400.
+				if(!triggered){
+					triggered = true; 							//	prevent this from running more than once each time it reaches the bottom.
+					offset += 25;
+					url.searchParams.set('offset', offset);		//	set offset parameter for get request
+
+					$.get(url, function(res){
+						var html = $($.parseHTML(res, document, true));					//	parse the response
+
+						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
+
+						feed.siblings('.posts-nav, .pagination').remove();				//	remove pagination and menu items.
+
+						$('div.container').eq(1).append(feed.parent().clone().html());	//	clone the parent of the .message nodes.
+
+						muteUsers();													//	reapply muteUsers
+						triggered = false;
+					});
+				}
+			}
 		});
 	}
 }
