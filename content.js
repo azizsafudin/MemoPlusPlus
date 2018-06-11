@@ -5,7 +5,7 @@ $(document).ready(function() {
 	generalChanges();
 	parseMemos();
 	neverEndingMemo();
-	$("body").fadeIn(150);		//	Fade in.
+	$("body").show();
 });
 
 const base_url = 'https://memo.cash';
@@ -33,8 +33,8 @@ const default_prefs =  	{
 */
 function generalChanges(){
 	var settings = getSettings();
-	$('nav.navbar').addClass('navbar-fixed-top');
-	$('div.wrapper').css('padding-top', '60px');
+	// $('nav.navbar').addClass('navbar-fixed-top');
+	// $('div.wrapper').css('padding-top', '60px');
 
 	$('li a:contains("New")').css('font-weight','bold');
 
@@ -276,10 +276,11 @@ function parseMemos(){
 	});
 
 	//	searching through all links
-	$('a').each(function(){
+	$('.message').find('a').each(function(){
 		var context = $(this);
 		twitterEmbed(context);
 		instagramEmbed(context);
+		directImageEmbed(context);
 	})
 }
 
@@ -325,6 +326,20 @@ function instagramEmbed(context){
 	}
 }
 
+/*
+	Embeds image when direct img link is posted.
+*/
+function directImageEmbed(context){
+	var text = context.text();
+	var regex = /(?:\.jpg|\.gif|\.png|\.jpeg|\.bmp)/;
+	var matched = text.match(regex);
+	if(matched) {
+		context.text('Loading image...');
+		text = '<img class="imgur" src="'+text+'">'; 
+		context.replaceWith(text);
+	}
+}
+
 function neverEndingMemo(){
 	var triggered = false;
 	if(window.location.href.indexOf('/posts') > -1){
@@ -343,21 +358,27 @@ function neverEndingMemo(){
 			if ((scrollHeight - scrollPosition) < 800) {		//	this is the only thing that worked for me. 800 is arbitrary. Can't be less than 400.
 				if(!triggered){
 					triggered = true; 							//	prevent this from running more than once each time it reaches the bottom.
-					offset += 25;
-					url.searchParams.set('offset', offset);		//	set offset parameter for get request
+					
+					url.searchParams.set('offset', (offset+25));		//	set offset parameter for get request
 
 					$.get(url, function(res){
+						offset += 25;													//	only increment the offset proper when get request succeeds.
 						var html = $($.parseHTML(res, document, true));					//	parse the response
 
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
 
-						feed.siblings('.posts-nav, .pagination').remove();				//	remove pagination and menu items.
+						feed.siblings('.posts-nav, .pagination, br').remove();			//	remove pagination and menu items.
 
 						$('div.container').eq(1).append(feed.parent().clone().html());	//	clone the parent of the .message nodes.
 
 						muteUsers();													//	reapply muteUsers
 						triggered = false;
-					});
+					}).fail(function() {
+				    	alert('Unable to load never ending memos');
+				    	setTimeout(function() {											//	allow to try again after 1 second
+						    triggered = false;											//	so it doesn't spam the user
+						}, 1000);
+				 	});
 				}
 			}
 		});
