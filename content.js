@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	migrate();
 	muteUsers();
 	fancyPolls();
 	settings();
@@ -28,25 +29,29 @@ const default_prefs =  	{
 							'default_topics' : 'all',
 						}
 
+function migrate(){
+	localStorage.removeItem('memo-list');
+	if(!localStorage.getItem('memo-mute-list')){
+		localStorage.setItem('memo-mute-list', JSON.stringify([]));
+	}
+}
+
 /*
 	Main function applying general UI changes.
 */
 function generalChanges(){
 	var settings = getSettings();
-	// $('nav.navbar').addClass('navbar-fixed-top');
-	// $('div.wrapper').css('padding-top', '60px');
 
 	$('li a:contains("New")').css('font-weight','bold');
 
-	$('a:contains("Dashboard")').hide();
-
+	$('a:contains("Dashboard")').hide();	//move dashboard into dropdown menu
 	$('a:contains("Settings")').parent().before('<li><a href="/">Dashboard</a></li>');
 
 	
 	var notif = Number($('li.notifications a').first().text().replace(/\s/g,''));
 	if(notif != 0){
 		var title = $(document).attr('title');
-		var favicon = new Favico({animation :'slide'});		//	favico.js is lit.
+		var favicon = new Favico();							//	favico.js is lit.
 		title = '('+notif+') ' + title;						//	set notification in title
 		$(document).attr('title', title);
 		$('li.notifications a').css('color', 'red');
@@ -54,8 +59,8 @@ function generalChanges(){
 	}
 
 	//	Make changes to UI based on settings.
-	$('a:contains("Posts")').attr('href', base_url + urls.posts[settings.default_posts] );
-	$('a:contains("Topics")').attr('href', base_url + urls.topics[settings.default_topics] );
+	$('nav').find('a:contains("Posts")').attr('href', base_url + urls.posts[settings.default_posts] );
+	$('nav').find('a:contains("Topics")').attr('href', base_url + urls.topics[settings.default_topics] );
 }
 
 /*
@@ -159,46 +164,54 @@ function muteUsers(){
 
 	$('button.memo-mute').click(function(e) {						//	Handle mute button click.
 		e.preventDefault();
-		var name = $(this).siblings('a.profile').text();
-		mute(name);
+		var addr = getUserAddress($(this).siblings('a.profile'));
+		mute(addr);
 	});	
 	
 	$('button.memo-unmute').click(function(e) {						//	Handle unmute button click.
 		e.preventDefault();
-		var name = $(this).siblings('span.memo-name').text();
-		unmute(name);
+		var addr = getUserAddress($(this).siblings('span.memo-addr').find('a').first());
+		unmute(addr);
 	});
 }
 
 function addMuteButton(){
-	const mute_btn = '<button type="button" class="btn btn-danger btn-sm memo-mute">Mute</button>';
+	const mute_btn = '<button type="button" class="btn btn-danger btn-sm memo-mute" style="border-radius: 2em;">Mute</button>';
 	$('p.name').each(function(index){
-		var name = $(this).find('a.profile, .memo-name').first().text();
-		if(!isMuted(name) && $(this).children('button.memo-mute').length === 0){	//	only add mute button if it doesn't already exist and user not muted.
+		var addr = getUserAddress($(this).find('a.profile, .memo-addr').first());
+		if(!isMuted(addr) && $(this).children('button.memo-mute').length === 0){	//	only add mute button if it doesn't already exist and user not muted.
 			$(this).append(mute_btn);
 		}
 	});
 }
+
 /*
 	Get mute list
 */
 function getMuteList(){
-	var list = localStorage.getItem('memo-list');
+	var list = localStorage.getItem('memo-mute-list');
 	if(!list){
-		localStorage.setItem('memo-list', JSON.stringify([]));
+		localStorage.setItem('memo-mute-list', JSON.stringify([]));
 		return [];
 	}
 	return JSON.parse(list);
 }
 
+/*
+	Set mute list
+*/
+function setMuteList(list){
+	localStorage.setItem('memo-mute-list', JSON.stringify(list));
+}
+
 function hideMutedUsers(){
-	const hidden_0 = '<div class="post-header memo-muted-user"><p class="name" style="padding:0.5em;"><span class="memo-name">';
-	const hidden_1 = '</span><span> has been muted.</span><button type="button" class="memo-unmute btn btn-info btn-sm" style="margin-left:1em;">Unmute</button></p></div>';
+	const hidden_0 = '<div class="post-header memo-muted-user"><p class="name" style="padding:0.5em;"><span class="memo-addr">';
+	const hidden_1 = '</span><span> has been muted.</span><button type="button" class="memo-unmute btn btn-info btn-sm" style="margin-left:1em; border-radius:2em;">Unmute</button></p></div>';
 
 	$('div.post').each(function(index) {
-		var name = $(this).find('a.profile').first().text();
-		if(isMuted(name) && $(this).children('div.memo-muted-user').length === 0){
-			var string = hidden_0 + name + hidden_1;
+		var addr = getUserAddress($(this).find('a.profile').first());
+		if(isMuted(addr) && $(this).children('div.memo-muted-user').length === 0){
+			var string = hidden_0 +`<a href="${base_url}/profile/${addr}">${addr}</a>`+ hidden_1;
 			$(this).children().not('div.post').not('script').remove();	//delete all child elements except script and div.post
 			$(this).prepend(string);
 		}
@@ -206,28 +219,28 @@ function hideMutedUsers(){
 }
 
 /*
-	Adds user's name to mute list
+	Adds user's address to mute list
 */
-function mute(name){
+function mute(addr){
 	var list = getMuteList();
 
-	if(!isMuted(name)) {
-		list.push(name);
-		localStorage.setItem('memo-list', JSON.stringify(list));
+	if(!isMuted(addr)) {
+		list.push(addr);
+		setMuteList(list);
 		location.reload();
 	}
 }
 
 /*
-	Removes user's name from mute list
+	Removes user's address from mute list
 */
-function unmute(name){
+function unmute(addr){
 	var list = getMuteList()
 
-	var index = list.indexOf(name);
+	var index = list.indexOf(addr);
 	if (index > -1) {
 		list.splice(index, 1);
-		localStorage.setItem('memo-list', JSON.stringify(list));
+		setMuteList(list);
 		location.reload();
 	}
 }
@@ -235,9 +248,22 @@ function unmute(name){
 /*
 	Returns whether a user is in mute list.
 */
-function isMuted(name){
+function isMuted(addr){
 	var list = getMuteList();
-	return list.indexOf(name) > -1;
+	return list.indexOf(addr) > -1;
+}
+
+
+/*
+	Gets user address from element containing href to profile page.
+*/
+function getUserAddress(context){
+	if(context.attr('href')){
+		var url = context.attr('href');
+		array = url.split('/');
+		address = array[array.length-1];
+		return address;
+	}
 }
 
 /*
@@ -270,10 +296,10 @@ function fancyPolls(){
 	General method that loops through all memos on the page.
 */
 function parseMemos(){
-	$('.message').each(function(){
-		var context = $(this);
-		nameTag(context);
-	});
+	// $('.message').each(function(){
+	// 	var context = $(this);
+	// 	nameTag(context);
+	// });
 
 	//	searching through all links
 	$('.message').find('a').each(function(){
@@ -342,7 +368,7 @@ function directImageEmbed(context){
 
 function neverEndingMemo(){
 	var triggered = false;
-	if(window.location.href.indexOf('/posts') > -1){
+	if(window.location.href.indexOf('/posts') > -1 || window.location.href.indexOf('/polls') > -1 ){
 
 		$('p.pagination').last().remove();					//	remove bottom pagination menu.
 
