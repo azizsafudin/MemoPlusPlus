@@ -16,7 +16,15 @@
   ],
   "content_scripts": [{
     "css": ["styles.css"],
-    "js": ["jquery.min.js", "content.js", "favico.min.js"],
+    "js": [
+            "jquery.min.js",
+            "favico.min.js",
+            "main.js", 
+            "muteusers.js",
+            "neverEndingMemo.js",
+            "pollsUI.js",
+            "parseMemos.js"
+          ],
     "matches": ["https://memo.cash/*"],
     "run_at": "document_end"
   }]
