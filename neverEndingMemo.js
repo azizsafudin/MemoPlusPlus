@@ -1,6 +1,6 @@
 function neverEndingMemo(){
 	var triggered = false;
-	if(window.location.href.indexOf('/posts') > -1 || window.location.href.indexOf('/polls') > -1 ){
+	if(window.location.href.indexOf('/posts') > -1 || window.location.href.indexOf('/polls') > -1 || window.location.href.indexOf('/profile/') > -1){
 
 		$('p.pagination').last().remove();					//	remove bottom pagination menu.
 
@@ -26,10 +26,15 @@ function neverEndingMemo(){
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
 
 						feed.siblings('.posts-nav, .pagination, br').remove();			//	remove pagination and menu items.
+						if(window.location.href.indexOf('/profile/') > -1){
+							feed.siblings('table, p, div.center').remove();				//	remove other profile page stuff
+						}
 
 						$('div.container').eq(1).append(feed.parent().clone().html());	//	clone the parent of the .message nodes.
 
 						muteUsers();													//	reapply muteUsers
+						verifyUsers();													//	reapply verifyUsers
+						
 						triggered = false;
 					}).fail(function() {
 				    	alert('Unable to load never ending memos');

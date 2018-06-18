@@ -1,33 +1,16 @@
 $(document).ready(function() {
 	migrate();
 	muteUsers();
+	verifyUsers();
 	fancyPolls();
 	settings();
 	generalChanges();
 	parseMemos();
 	neverEndingMemo();
+	mutationHandler();
 	$("body").show();
 });
 
-const base_url = 'https://memo.cash';
-const urls = 	{
-					'posts' : {
-						'ranked': '/posts/ranked',
-						'top': '/posts/top',
-						'personalized': '/posts/personalized',
-						'new': '/posts/new'
-					},
-					'topics' : {
-						'following': '/topics',
-						'all': '/topics/all',
-						'most-followed': '/topics/most-followed',
-						'most-posts': '/topics/most-posts',
-					},
-				}
-const default_prefs =  	{
-							'default_posts' : 'ranked',
-							'default_topics' : 'all',
-						}
 
 function migrate(){
 	localStorage.removeItem('memo-list');
@@ -56,6 +39,18 @@ function generalChanges(){
 		$(document).attr('title', title);
 		$('li.notifications a').css('color', 'red');
 		favicon.badge(notif);
+	}
+
+	//changes on profile page
+	if(location.href.indexOf('/profile') > -1){
+		var img = $('td.name').find('img.profile-pic').first();
+		img.css('height', '2em');
+		img.mouseover(function(e){
+			$(this).css('height', '6em');
+		});
+		img.mouseout(function(e){
+			$(this).css('height', '2em');
+		});
 	}
 
 	//	Make changes to UI based on settings.
@@ -159,8 +154,23 @@ function settings(){
 function getUserAddress(context){
 	if(context.attr('href')){
 		var url = context.attr('href');
-		array = url.split('/');
-		address = array[array.length-1];
+		var array = url.split('/');
+		var address = array[array.length-1];
 		return address;
+	}
+}
+
+function mutationHandler(){
+	var config = {
+		attributes: true, 
+		childList: true, 
+		characterData: true 
+	};
+	if(location.href.indexOf('/topic/') > -1){
+		var target = $('#all-posts')[0];
+		var observer = new WebKitMutationObserver(function(mutations) {
+			verifyUsers();
+		});
+		observer.observe(target, config);
 	}
 }
