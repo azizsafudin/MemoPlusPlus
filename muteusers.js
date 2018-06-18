@@ -23,7 +23,7 @@ function muteUsers(){
 function addMuteButton(){
 	const mute_btn = '<button type="button" class="btn btn-danger btn-sm memo-mute" style="border-radius: 2em;">Mute</button>';
 	$('p.name').each(function(index){
-		var addr = getUserAddress($(this).find('a.profile, .memo-addr').first());
+		var addr = getUserAddress($(this).find('a.profile, .memo-addr a').first());
 		if(!isMuted(addr) && $(this).children('button.memo-mute').length === 0){	//	only add mute button if it doesn't already exist and user not muted.
 			$(this).append(mute_btn);
 		}
