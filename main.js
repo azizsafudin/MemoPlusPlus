@@ -55,8 +55,9 @@ function generalChanges(){
 	$('body.dark nav.navbar').css('background', `linear-gradient(#${dark_palette[1]},#${dark_palette[2]})`);
 	// $('body.dark a').css('color', '#'+dark_palette[3]);
 	// $('body.dark .navbar-default .navbar-nav>.active>a').css('border-color','#'+dark_palette[3]);
-	$('.post-header').css('margin-bottom','1em');	
-
+	if(location.href.indexOf('/topic') < 0){
+		$('.post-header').css('margin-bottom','1em');	
+	}
 
 	var notif = Number($('li.notifications a').first().text().replace(/\s/g,''));
 	if(notif != 0){
