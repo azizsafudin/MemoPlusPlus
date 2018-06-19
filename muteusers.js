@@ -21,7 +21,7 @@ function muteUsers(){
 }
 
 function addMuteButton(){
-	const mute_btn = '<button type="button" class="btn btn-danger btn-sm memo-mute" style="border-radius: 2em;">Mute</button>';
+	const mute_btn = '<button type="button" class="btn btn-danger btn-xs memo-mute" style="border-radius: 2em; font-size:0.7em;">Mute</button>';
 	$('p.name').each(function(index){
 		var addr = getUserAddress($(this).find('a.profile, .memo-addr a').first());
 		if(!isMuted(addr) && $(this).children('button.memo-mute').length === 0){	//	only add mute button if it doesn't already exist and user not muted.
@@ -51,16 +51,37 @@ function setMuteList(list){
 
 function hideMutedUsers(){
 	const hidden_0 = '<div class="post-header memo-muted-user"><p class="name" style="padding:0.5em;"><span class="memo-addr">';
-	const hidden_1 = '</span><span> has been muted.</span><button type="button" class="memo-unmute btn btn-info btn-sm" style="margin-left:1em; border-radius:2em;">Unmute</button></p></div>';
-
+	const hidden_1 = '</span><span> has been muted.</span>';
+	const unmute_btn = '<button type="button" class="memo-unmute btn btn-info btn-xs" style="margin-left:1em; border-radius:2em; font-size:0.7em;">Unmute</button>';
+	const hidden_2 = '</p></div>';
 	$('div.post').each(function(index) {
 		var addr = getUserAddress($(this).find('a.profile').first());
 		if(isMuted(addr) && $(this).children('div.memo-muted-user').length === 0){
-			var string = hidden_0 +`<a href="${base_url}/profile/${addr}">${addr}</a>`+ hidden_1;
+			var string = `${hidden_0}<a href="${base_url}/profile/${addr}" title="${addr}">${trimAddress(addr,6,4)}</a>${hidden_1}${unmute_btn}${hidden_2}`;
 			$(this).children().not('div.post').not('script').remove();	//delete all child elements except script and div.post
 			$(this).prepend(string);
 		}
-	});		
+	});	
+	$('div.reply').each(function(index) {
+		var addr = getUserAddress($(this).find('a.image-link').first());
+		if(isMuted(addr) && $(this).children('span.memo-addr').length === 0){
+			$(this).text('');
+			$(this).prepend(`<span class="memo-addr"><a href="${base_url}/profile/${addr}" title="${addr}">${trimAddress(addr,6,4)}</a> has been muted.</span>${unmute_btn}`);
+		}
+	});
+
+	if(location.href.indexOf('/notifications') > -1){
+		var hidden = 0;
+		$('tr').each(function(index){
+			var addr = getUserAddress($(this).find('a').first());
+			if(isMuted(addr) && 1){
+				var context = $(this).find('a').first();
+				context.parent().text('');
+				context.siblings().remove();
+				$(this).find('td:eq(1)').prepend(`Activity has been hidden from <a href="${base_url}/profile/${addr}" title="${addr}">${trimAddress(addr,6,4)}</a>`);
+			}
+		});
+	}	
 }
 
 /*
@@ -72,6 +93,8 @@ function mute(addr){
 	if(!isMuted(addr)) {
 		list.push(addr);
 		setMuteList(list);
+		location.reload();
+	}else{
 		location.reload();
 	}
 }
@@ -86,6 +109,8 @@ function unmute(addr){
 	if (index > -1) {
 		list.splice(index, 1);
 		setMuteList(list);
+		location.reload();
+	}else{
 		location.reload();
 	}
 }

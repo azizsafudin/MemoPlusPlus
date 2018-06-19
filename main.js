@@ -160,6 +160,12 @@ function getUserAddress(context){
 	}
 }
 
+function trimAddress(addr, firstN, lastN){
+	var firstN = addr.substring(0,firstN);
+	var lastN = addr.substr(addr.length - lastN);
+	return firstN+'...'+lastN;
+}
+
 function mutationHandler(){
 	var config = {
 		attributes: true, 
