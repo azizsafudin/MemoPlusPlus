@@ -20,6 +20,7 @@
             "jquery.min.js",
             "favico.min.js",
             "main.js", 
+            "settings.js",
             "defaults.js",
             "muteusers.js",
             "verifyUsers.js",

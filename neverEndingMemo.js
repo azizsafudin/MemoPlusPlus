@@ -35,6 +35,7 @@ function neverEndingMemo(){
 						muteUsers();													//	reapply muteUsers
 						verifyUsers();													//	reapply verifyUsers
 						parseMemos();
+						generalChanges();
 						triggered = false;
 					}).fail(function() {
 				    	alert('Unable to load never ending memos');
