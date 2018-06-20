@@ -19,7 +19,8 @@ $(document).ready(function() {
 
 
 function migrate(){
-	var old_mute_list = localStorage.removeItem('memo-list');
+	var old_mute_list = localStorage.getItem('memo-list');
+	localStorage.removeItem('memo-list');
 	if(old_mute_list) localStorage.setItem('memo-mute-list', old_mute_list);
 
 	var old_settings = getSettings();
