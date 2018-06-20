@@ -14,6 +14,9 @@
     "https://publish.twitter.com/*",
     "https://api.instagram.com/*"
   ],
+  "web_accessible_resources": [
+    "assets/*.woff2"
+  ],
   "content_scripts": [{
     "css": ["styles.css"],
     "js": [

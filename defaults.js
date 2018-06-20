@@ -16,8 +16,14 @@ const urls = 	{
 const default_prefs =  	{
 							'default_posts' : 'ranked',
 							'default_topics' : 'all',
-							'refresh_enabled': false,
-							'refresh_rate': 900000,				//refresh every 15 minutes
+							'refresh':{
+								'enabled': false,
+								'rate': 900000
+							},
+							'font': {
+								'url' : '#',
+								'name' : '#'	
+							}
 						}
 
 const default_verified_list =
