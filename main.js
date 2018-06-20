@@ -59,12 +59,13 @@ function setupPage(){
 	// $('body.dark .navbar-default .navbar-nav>.active>a').css('border-color','#'+dark_palette[3]);
 	$('.navbar-brand.navbar-left').attr('href', base_url+'/feed')
 
-	$('#navbarDropdown')
-		.css('font-weight','700')
-		.append(' <span class="glyphicon glyphicon-plus" title="New memo"></span>');
+	if($('#memo-plus-icon').length === 0){
+		$('#navbarDropdown')
+			.css('font-weight','700')
+			.append(' <span class="glyphicon glyphicon-plus" id="memo-plus-icon" title="New memo"></span>');
+		}
 
 	var dashboard = $('div.navbar-collapse ul.nav.navbar-nav li a').first().text();
-
 	$('div.navbar-collapse ul.nav.navbar-nav li a').first().hide();		//	move dashboard into dropdown menu
 	$('a[href$="settings"]').parent()
 			.before(`<li><a href="/">${dashboard}</a></li>`);
