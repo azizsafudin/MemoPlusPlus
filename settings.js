@@ -91,6 +91,7 @@ function settings(){
 						<div class="col-sm-3"></div>
 						<div class="col-sm-9">
 							<input type="button" id="memo-save" class="btn btn-success" value="Save memo++ settings">
+							<span id="memo-saved" style="display:none;">Saved!</span>
 						</div>
 						</div>`						
 	var template_end =	'</form>';
@@ -113,7 +114,7 @@ function settings(){
 		settings.default_topics = topics;
 		setSettings(settings);
 
-		alert('Settings updated!');
+		$('span#memo-saved').show();
 		location.reload();
 	})
 

@@ -1,6 +1,11 @@
 function neverEndingMemo(){
 	var triggered = false;
-	if(window.location.href.indexOf('/posts') > -1 || window.location.href.indexOf('/polls') > -1 || window.location.href.indexOf('/profile/') > -1){
+	if(
+		location.href.indexOf('/posts') > -1 
+		|| location.href.indexOf('/polls') > -1
+		|| location.href.indexOf('/feed') > -1 
+		|| location.href.indexOf('/profile/1') > -1			//	WARNING: kinda iffy way to only enable in main profile page and nowhere else.
+		){
 
 		$('p.pagination').last().remove();					//	remove bottom pagination menu.
 		$
@@ -29,7 +34,7 @@ function neverEndingMemo(){
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
 
 						feed.siblings('.posts-nav, .pagination, br').remove();			//	remove pagination and menu items.
-						if(window.location.href.indexOf('/profile/') > -1){
+						if(location.href.indexOf('/profile/1') > -1 || location.href.indexOf('/feed') > -1){
 							feed.siblings('table, p, div.center').remove();				//	remove other profile page stuff
 						}
 
