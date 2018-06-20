@@ -33,6 +33,12 @@
           ],
     "matches": ["https://memo.cash/*"],
     "run_at": "document_end"
-  }]
+  }],
+  "applications": {
+    "gecko": {
+      "id": "memoplusplus@modulus.cash",
+      "strict_min_version": "42.0"
+    }
+  }
  
 }
