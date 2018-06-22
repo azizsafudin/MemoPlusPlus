@@ -1,5 +1,6 @@
+var triggered = false;
+
 function neverEndingMemo(){
-	var triggered = false;
 	if(
 		location.href.indexOf('/posts') > -1 
 		|| location.href.indexOf('/polls') > -1
@@ -32,6 +33,12 @@ function neverEndingMemo(){
 						var html = $($.parseHTML(res, document, true));					//	parse the response
 
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
+
+						if(feed.siblings('.posts-nav').length === 0){									//	if end of feed
+							triggered = true; 
+							$('#memo-loading p.center').text('End of feed');			//	Remove loading message
+							return;
+						}
 
 						feed.siblings('.posts-nav, .pagination, br').remove();			//	remove pagination and menu items.
 						if(location.href.indexOf('/profile/1') > -1 || location.href.indexOf('/feed') > -1){

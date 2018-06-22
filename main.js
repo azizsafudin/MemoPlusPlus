@@ -12,7 +12,6 @@ $(document).ready(function() {
 
 	neverEndingMemo();			//	Loads new memo once the bottom is reached
 	mutationHandler();			//	Reapplies extension when DOM changes
-	refresh();					//	Refreshes the page to update notifications
 
 	$("body").show();
 });
@@ -179,18 +178,9 @@ function mutationHandler(){
 	}
 }
 
-function refresh(){
-	var settings = getSettings();
-	var refresh_rate = settings.refresh.rate;
-	if(settings.refresh.enabled){
-		setTimeout(function(){
-			location.reload(true);
-		}, refresh.rate);
 function updateView(){		//	reapplies all UI changes
 	muteUsers();													//	reapply muteUsers
 	verifyUsers();													//	reapply verifyUsers
 	parseMemos();
 	generalChanges();
-}
-	}
 }

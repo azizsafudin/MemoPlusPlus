@@ -16,10 +16,6 @@ const urls = 	{
 const default_prefs =  	{
 							'default_posts' : 'ranked',
 							'default_topics' : 'all',
-							'refresh':{
-								'enabled': false,
-								'rate': 900000
-							},
 							'font': {
 								'url' : '#',
 								'name' : '#'	
