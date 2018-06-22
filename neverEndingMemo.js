@@ -40,10 +40,7 @@ function neverEndingMemo(){
 
 						$('div.container').eq(1).append(feed.parent().clone().html());	//	clone the parent of the .message nodes.
 
-						muteUsers();													//	reapply muteUsers
-						verifyUsers();													//	reapply verifyUsers
-						parseMemos();
-						generalChanges();
+						updateView();
 						$('#memo-loading').remove();									//	Remove loading message
 						triggered = false;
 
