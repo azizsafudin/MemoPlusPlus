@@ -34,7 +34,7 @@ function neverEndingMemo(){
 
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
 
-						if(feed.siblings('.posts-nav').length === 0){									//	if end of feed
+						if(feed.siblings('.post').length === 0){									//	if end of feed
 							triggered = true; 
 							$('#memo-loading p.center').text('End of feed');			//	Remove loading message
 							return;
