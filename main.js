@@ -9,6 +9,7 @@ $(document).ready(function() {
 	fancyPolls();				//	Applies fancy poll UI
 	generalChanges();			//	Applies general UI changes
 	parseMemos();				//	Embeds stuff like twitter/instagram links found in memo
+	updateNotifications();		//	Applies notifications stuff
 
 	neverEndingMemo();			//	Loads new memo once the bottom is reached
 	mutationHandler();			//	Reapplies extension when DOM changes
@@ -16,6 +17,8 @@ $(document).ready(function() {
 	$("body").show();
 });
 
+var notification_count = Number($('li.notifications a').first().text().replace(/\s/g,''));        //    global var to handle notifications
+var title = '';
 
 function migrate(){
 	var old_mute_list = localStorage.getItem('memo-list');
@@ -46,6 +49,8 @@ function generalChanges(){
 
 function setupPage(){
 	var settings = getSettings();
+	title = $(document).attr('title');
+	
 	$('head').prepend('<link href="'+settings.font.url+'" rel="stylesheet">');	//	Allow users to import fonts from google fonts
 	$('body').css('font-family', '"'+settings.font.name+'", Muli, "Helvetica Neue", Helvetica, Arial, sans-serif');
 	
@@ -133,16 +138,6 @@ function setupPage(){
 	//	Make changes to UI based on settings.
 	$('nav a[href*="posts"]').first().attr('href', base_url + urls.posts[settings.default_posts] );
 	$('nav a[href*="topics"]').first().attr('href', base_url + urls.topics[settings.default_topics] );
-
-	var notif = Number($('li.notifications a').first().text().replace(/\s/g,''));
-	if(notif != 0){
-		var title = $(document).attr('title');
-		var favicon = new Favico();							//	favico.js is lit.
-		title = '('+notif+') ' + title;						//	set notification in title
-		$(document).attr('title', title);
-		$('li.notifications a').css('color', 'red');
-		favicon.badge(notif);
-	}
 }
 
 /*
@@ -183,4 +178,25 @@ function updateView(){		//	reapplies all UI changes
 	verifyUsers();													//	reapply verifyUsers
 	parseMemos();
 	generalChanges();
+}
+
+function updateNotifications(){
+	var favicon = new Favico();										//	favico.js is lit.
+
+	if(location.href.indexOf('/notifications') > -1){
+		notification_count = 0;
+		$(document).attr('title', title);
+		favicon.reset();
+	}
+
+	if(notification_count != 0){
+		var new_title = '('+notification_count+') ' + title;		//	set notification in title
+		$(document).attr('title', new_title);
+		favicon.badge(notification_count);
+		$('li.notifications a').css('color', 'red');
+	}
+
+	$('li.notifications a')
+		.text(notification_count+' ')
+		.append('<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>')
 }
