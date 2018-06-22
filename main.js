@@ -62,7 +62,7 @@ function setupPage(){
 	if($('#memo-plus-icon').length === 0){
 		$('#navbarDropdown')
 			.css('font-weight','700')
-			.append(' <span class="glyphicon glyphicon-plus" id="memo-plus-icon" title="New memo"></span>');
+			.append(' <span class="glyphicon glyphicon-plus" id="memo-plus-icon" style="font-size:0.8em" title="New memo"></span>');
 		}
 
 	var dashboard = $('div.navbar-collapse ul.nav.navbar-nav li a').first().text();
