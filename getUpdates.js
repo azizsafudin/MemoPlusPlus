@@ -7,7 +7,7 @@ function getUpdates(){
 				if(prefix === '6d03'){  //  replies 0x6d03 txhash(30), message(184)
 					if(item.data.length > 1) {
             let txhash = ab2hex(new Uint8Array(item.data[1].buf.data.slice().reverse()).buffer);
-            if(transactionExists(txhash) > -1){
+            if(transactionExists(txhash)){
               notification_count++;
               updateNotifications();
             }
@@ -16,7 +16,7 @@ function getUpdates(){
         if(prefix === '6d04'){  //  likes/tips 0x6d04 txhash(30)
           if(item.data.length > 1) {
             let txhash = ab2hex(new Uint8Array(item.data[1].buf.data.slice().reverse()).buffer);
-            if(transactionExists(txhash) > -1){
+            if(transactionExists(txhash)){
               notification_count++;
               updateNotifications();
             }
