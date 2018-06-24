@@ -2,23 +2,27 @@ $(document).ready(function() {
 	migrate();					//	migrate localStorage defaults/changes
 	settings();					//	prepare settings page, load settings
 	setupPage();				//	UI changes to be done only once
+	loadTransactions();			//	get all txhash belonging to current user
 
+	//	Everything here can be called more than once, to reapply the changes.
 	muteUsers();				//	main entry for preparing muting feature
 	verifyUsers();				//	main entry for verifying user feature
-
 	fancyPolls();				//	Applies fancy poll UI
 	generalChanges();			//	Applies general UI changes
 	parseMemos();				//	Embeds stuff like twitter/instagram links found in memo
 	updateNotifications();		//	Applies notifications stuff
+	
+	getUpdates();				//	sets up chainfeed.listen
 
 	neverEndingMemo();			//	Loads new memo once the bottom is reached
 	mutationHandler();			//	Reapplies extension when DOM changes
-
 	$("body").show();
+	
+	console.log('Memo++ loaded');
 });
 
 var notification_count = Number($('li.notifications a').first().text().replace(/\s/g,''));        //    global var to handle notifications
-var title = '';
+var title = $(document).attr('title');
 
 function migrate(){
 	var old_mute_list = localStorage.getItem('memo-list');
@@ -29,27 +33,11 @@ function migrate(){
 	var new_settings = Object.assign({}, default_prefs, old_settings);
 	setSettings(new_settings);
 }
-
 /*
-	Main function applying general UI changes.
+	Sets up UI changes and any other required changes
 */
-function generalChanges(){
-	$('.btn')
-		.not('p.posts-nav a')
-		.not('.pagination a')
-		.not('div.dashboard-actions a')
-		.css('border-radius', '1.5em');									//	make all buttons cute and rounded
-	$('input, select').css('border-radius', '1.5em');					//	make all inputs rounded and cute
-	$('textarea').css('border-radius', '1em');							//	make all textareas slightly rounded and cute
-
-	if(location.href.indexOf('/topic') < 0){
-		$('.post-header').css('margin-bottom','1em');	
-	}
-}
-
 function setupPage(){
 	var settings = getSettings();
-	title = $(document).attr('title');
 	
 	$('head').prepend('<link href="'+settings.font.url+'" rel="stylesheet">');	//	Allow users to import fonts from google fonts
 	$('body').css('font-family', '"'+settings.font.name+'", Muli, "Helvetica Neue", Helvetica, Arial, sans-serif');
@@ -141,6 +129,23 @@ function setupPage(){
 }
 
 /*
+	Applies general UI changes. Can be reapplied more than once.
+*/
+function generalChanges(){
+	$('.btn')
+		.not('p.posts-nav a')
+		.not('.pagination a')
+		.not('div.dashboard-actions a')
+		.css('border-radius', '1.5em');									//	make all buttons cute and rounded
+	$('input, select').css('border-radius', '1.5em');					//	make all inputs rounded and cute
+	$('textarea').css('border-radius', '1em');							//	make all textareas slightly rounded and cute
+
+	if(location.href.indexOf('/topic') < 0){
+		$('.post-header').css('margin-bottom','1em');	
+	}
+}
+
+/*
 	Gets user address from element containing href to profile page.
 */
 function getUserAddress(context){
@@ -199,4 +204,14 @@ function updateNotifications(){
 	$('li.notifications a')
 		.text(notification_count+' ')
 		.append('<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>')
+}
+
+function getUser(){
+    if(!!localStorage.WalletPassword){
+        var address = getUserAddress($('a[href*="profile/"]').first());
+        return {
+            'address' : address
+        };
+    }
+    return false;
 }

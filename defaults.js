@@ -40,3 +40,5 @@ const dark_palette =	[
 							'71bd2e',
 							'7cbd44' 
 						]
+
+const api_url = 'https://bitcoincash.blockexplorer.com/api';
