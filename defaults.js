@@ -16,10 +16,6 @@ const urls = 	{
 const default_prefs =  	{
 							'default_posts' : 'ranked',
 							'default_topics' : 'all',
-							'refresh':{
-								'enabled': false,
-								'rate': 900000
-							},
 							'font': {
 								'url' : '#',
 								'name' : '#'	
@@ -44,3 +40,5 @@ const dark_palette =	[
 							'71bd2e',
 							'7cbd44' 
 						]
+
+const api_url = 'https://bitcoincash.blockexplorer.com/api';

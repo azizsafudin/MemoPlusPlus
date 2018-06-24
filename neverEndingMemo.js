@@ -1,5 +1,6 @@
+var triggered = false;
+
 function neverEndingMemo(){
-	var triggered = false;
 	if(
 		location.href.indexOf('/posts') > -1 
 		|| location.href.indexOf('/polls') > -1
@@ -33,6 +34,12 @@ function neverEndingMemo(){
 
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
 
+						if(feed.siblings('.post').length === 0){									//	if end of feed
+							triggered = true; 
+							$('#memo-loading p.center').text('End of feed');			//	Remove loading message
+							return;
+						}
+
 						feed.siblings('.posts-nav, .pagination, br').remove();			//	remove pagination and menu items.
 						if(location.href.indexOf('/profile/1') > -1 || location.href.indexOf('/feed') > -1){
 							feed.siblings('table, p, div.center').remove();				//	remove other profile page stuff
@@ -40,10 +47,7 @@ function neverEndingMemo(){
 
 						$('div.container').eq(1).append(feed.parent().clone().html());	//	clone the parent of the .message nodes.
 
-						muteUsers();													//	reapply muteUsers
-						verifyUsers();													//	reapply verifyUsers
-						parseMemos();
-						generalChanges();
+						updateView();
 						$('#memo-loading').remove();									//	Remove loading message
 						triggered = false;
 

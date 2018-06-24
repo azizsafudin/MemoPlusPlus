@@ -2,7 +2,7 @@
   "manifest_version": 2,
  
   "name": "Memo++",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "A memo.cash extension",
   "icons": 
   {
@@ -12,7 +12,8 @@
   },
   "permissions": [
     "https://publish.twitter.com/*",
-    "https://api.instagram.com/*"
+    "https://api.instagram.com/*",
+    "https://chainfeed.org/stream"
   ],
   "web_accessible_resources": [
     "assets/*.woff2"
@@ -22,9 +23,11 @@
     "js": [
             "jquery.min.js",
             "favico.min.js",
+            "chainfeed.js",
             "main.js", 
             "settings.js",
             "defaults.js",
+            "getUpdates.js",
             "muteusers.js",
             "verifyUsers.js",
             "neverEndingMemo.js",

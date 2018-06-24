@@ -2,50 +2,43 @@ $(document).ready(function() {
 	migrate();					//	migrate localStorage defaults/changes
 	settings();					//	prepare settings page, load settings
 	setupPage();				//	UI changes to be done only once
+	loadTransactions();			//	get all txhash belonging to current user
 
+	//	Everything here can be called more than once, to reapply the changes.
 	muteUsers();				//	main entry for preparing muting feature
 	verifyUsers();				//	main entry for verifying user feature
-
 	fancyPolls();				//	Applies fancy poll UI
 	generalChanges();			//	Applies general UI changes
 	parseMemos();				//	Embeds stuff like twitter/instagram links found in memo
+	updateNotifications();		//	Applies notifications stuff
+	
+	getUpdates();				//	sets up chainfeed.listen
 
 	neverEndingMemo();			//	Loads new memo once the bottom is reached
 	mutationHandler();			//	Reapplies extension when DOM changes
-	refresh();					//	Refreshes the page to update notifications
-
 	$("body").show();
+	
+	console.log('Memo++ loaded');
 });
 
+var notification_count = Number($('li.notifications a').first().text().replace(/\s/g,''));        //    global var to handle notifications
+var title = $(document).attr('title');
 
 function migrate(){
-	var old_mute_list = localStorage.removeItem('memo-list');
+	var old_mute_list = localStorage.getItem('memo-list');
+	localStorage.removeItem('memo-list');
 	if(old_mute_list) localStorage.setItem('memo-mute-list', old_mute_list);
 
 	var old_settings = getSettings();
 	var new_settings = Object.assign({}, default_prefs, old_settings);
 	setSettings(new_settings);
 }
-
 /*
-	Main function applying general UI changes.
+	Sets up UI changes and any other required changes
 */
-function generalChanges(){
-	$('.btn')
-		.not('p.posts-nav a')
-		.not('.pagination a')
-		.not('div.dashboard-actions a')
-		.css('border-radius', '1.5em');									//	make all buttons cute and rounded
-	$('input, select').css('border-radius', '1.5em');					//	make all inputs rounded and cute
-	$('textarea').css('border-radius', '1em');							//	make all textareas slightly rounded and cute
-
-	if(location.href.indexOf('/topic') < 0){
-		$('.post-header').css('margin-bottom','1em');	
-	}
-}
-
 function setupPage(){
 	var settings = getSettings();
+	
 	$('head').prepend('<link href="'+settings.font.url+'" rel="stylesheet">');	//	Allow users to import fonts from google fonts
 	$('body').css('font-family', '"'+settings.font.name+'", Muli, "Helvetica Neue", Helvetica, Arial, sans-serif');
 	
@@ -62,7 +55,7 @@ function setupPage(){
 	if($('#memo-plus-icon').length === 0){
 		$('#navbarDropdown')
 			.css('font-weight','700')
-			.append(' <span class="glyphicon glyphicon-plus" id="memo-plus-icon" title="New memo"></span>');
+			.append(' <span class="glyphicon glyphicon-plus" id="memo-plus-icon" style="font-size:0.8em" title="New memo"></span>');
 		}
 
 	var dashboard = $('div.navbar-collapse ul.nav.navbar-nav li a').first().text();
@@ -133,15 +126,22 @@ function setupPage(){
 	//	Make changes to UI based on settings.
 	$('nav a[href*="posts"]').first().attr('href', base_url + urls.posts[settings.default_posts] );
 	$('nav a[href*="topics"]').first().attr('href', base_url + urls.topics[settings.default_topics] );
+}
 
-	var notif = Number($('li.notifications a').first().text().replace(/\s/g,''));
-	if(notif != 0){
-		var title = $(document).attr('title');
-		var favicon = new Favico();							//	favico.js is lit.
-		title = '('+notif+') ' + title;						//	set notification in title
-		$(document).attr('title', title);
-		$('li.notifications a').css('color', 'red');
-		favicon.badge(notif);
+/*
+	Applies general UI changes. Can be reapplied more than once.
+*/
+function generalChanges(){
+	$('.btn')
+		.not('p.posts-nav a')
+		.not('.pagination a')
+		.not('div.dashboard-actions a')
+		.css('border-radius', '1.5em');									//	make all buttons cute and rounded
+	$('input, select').css('border-radius', '1.5em');					//	make all inputs rounded and cute
+	$('textarea').css('border-radius', '1em');							//	make all textareas slightly rounded and cute
+
+	if(location.href.indexOf('/topic') < 0){
+		$('.post-header').css('margin-bottom','1em');	
 	}
 }
 
@@ -172,18 +172,46 @@ function mutationHandler(){
 	if(location.href.indexOf('/topic/') > -1){
 		var target = $('#all-posts')[0];
 		var observer = new WebKitMutationObserver(function(mutations) {
-			verifyUsers();
+			updateView();
 		});
 		observer.observe(target, config);
 	}
 }
 
-function refresh(){
-	var settings = getSettings();
-	var refresh_rate = settings.refresh.rate;
-	if(settings.refresh.enabled){
-		setTimeout(function(){
-			location.reload(true);
-		}, refresh.rate);
+function updateView(){		//	reapplies all UI changes
+	muteUsers();													//	reapply muteUsers
+	verifyUsers();													//	reapply verifyUsers
+	parseMemos();
+	generalChanges();
+}
+
+function updateNotifications(){
+	var favicon = new Favico();										//	favico.js is lit.
+
+	if(location.href.indexOf('/notifications') > -1){
+		notification_count = 0;
+		$(document).attr('title', title);
+		favicon.reset();
 	}
+
+	if(notification_count != 0){
+		var new_title = '('+notification_count+') ' + title;		//	set notification in title
+		$(document).attr('title', new_title);
+		favicon.badge(notification_count);
+		$('li.notifications a').css('color', 'red');
+	}
+
+	$('li.notifications a')
+		.text(notification_count+' ')
+		.append('<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>')
+}
+
+function getUser(){
+    if(!!localStorage.WalletPassword){
+        var address = getUserAddress($('a[href*="profile/"]').first());
+        return {
+            'address' : address
+        };
+    }
+    return false;
 }
