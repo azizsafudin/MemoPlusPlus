@@ -61,7 +61,14 @@ function hideMutedUsers(){
 			$(this).children().not('div.post').not('script').remove();	//delete all child elements except script and div.post
 			$(this).prepend(string);
 		}
+		var addr2 = getUserAddress($(this).find('a.profile').eq(1));
+		if(isMuted(addr2) && $(this).children('div.memo-muted-user').length === 0){
+			var string = `${hidden_0}<a href="${base_url}/profile/${addr2}" title="${addr2}">${trimAddress(addr2,6,4)}</a>${hidden_1}${unmute_btn}${hidden_2}`;
+			$(this).children().not('div.post').not('script').not('div.post-header:first').remove();	//delete all child elements except script and div.post
+			$(this).append(string);
+		}
 	});	
+
 	$('div.reply').each(function(index) {
 		var addr = getUserAddress($(this).find('a.image-link').first());
 		if(isMuted(addr) && $(this).children('span.memo-addr').length === 0){

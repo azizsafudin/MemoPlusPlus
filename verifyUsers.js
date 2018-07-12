@@ -34,19 +34,19 @@ function addVerifyButton(){
 	var array = url.split('/');
 	var address = array[array.length-1];
 
-	var context = $('ul.nav.nav-pills');
+	var context = $('div.title');
 	//Only add button if button isn't already there.
 	if(!isVerified(address) && context.find('a.memo-verify').length === 0){
-	context.append(	`<li><a href="#" class="memo-verify" title="This sets user as verified">
+	context.children().last().before(`<span><a href="#" class="btn btn-sm btn-success memo-verify" title="This sets user as verified">
 										<span class="glyphicon glyphicon-check" aria-hidden="true"></span> 
 										Verify User
-									</a></li>`);
+									</a></span>`);
 	}
 	else if(isVerified(address) && context.find('a.memo-unverify').length === 0){
-	context.append(	`<li><a href="#" class="memo-unverify" title="Unverify user"">
-									<span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span> 
-									<span class="text-danger">Unverify User</span>
-									</a></li>`);
+	context.children().last().before(`<span><a href="#" class="btn btn-sm btn-danger memo-unverify" title="Unverify user"">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+									<span>Unverify User</span>
+									</a></span>`);
 	}
 }
 
@@ -65,6 +65,7 @@ function addVerifiedIcon(){
 	if(location.href.indexOf('/profile/') > - 1){
 		if(isVerified(address) && $('td.name').children('.memo-verified').length === 0){
 			$('td.name').append(' '+verified_icon);
+			$('div.title h3').children().first().before(verified_icon);
 		}
 	}
 

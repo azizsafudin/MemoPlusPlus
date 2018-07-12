@@ -111,18 +111,6 @@ function setupPage(){
 			$(this).removeClass('btn-default');
 		});
 
-	//changes on profile page
-	if(location.href.indexOf('/profile') > -1){
-		var img = $('td.name').find('img.profile-pic').first();
-		img.css('height', '2em');
-		img.mouseover(function(e){
-			$(this).css('height', '6em');
-		});
-		img.mouseout(function(e){
-			$(this).css('height', '2em');
-		});
-	}
-
 	//	Make changes to UI based on settings.
 	$('nav a[href*="posts"]').first().attr('href', base_url + urls.posts[settings.default_posts] );
 	$('nav a[href*="topics"]').first().attr('href', base_url + urls.topics[settings.default_topics] );
@@ -139,10 +127,6 @@ function generalChanges(){
 		.css('border-radius', '1.5em');									//	make all buttons cute and rounded
 	$('input, select').css('border-radius', '1.5em');					//	make all inputs rounded and cute
 	$('textarea').css('border-radius', '1em');							//	make all textareas slightly rounded and cute
-
-	if(location.href.indexOf('/topic') < 0){
-		$('.post-header').css('margin-bottom','1em');	
-	}
 }
 
 /*
