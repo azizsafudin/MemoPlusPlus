@@ -5,7 +5,6 @@ function neverEndingMemo(){
 		location.href.indexOf('/posts') > -1 
 		|| location.href.indexOf('/polls') > -1
 		|| location.href.indexOf('/feed') > -1 
-		|| location.href.indexOf('/profile/1') > -1			//	WARNING: kinda iffy way to only enable in main profile page and nowhere else.
 		){
 
 		$('p.pagination').last().remove();					//	remove bottom pagination menu.
@@ -17,9 +16,8 @@ function neverEndingMemo(){
 		else offset = Number(offset);						//	set offset to int.
 
 		$(window).on("scroll", function() {
-			var scrollHeight = $(document).height();
-			var scrollPosition = $(window).scrollTop();
-			if ((scrollHeight - scrollPosition) < 800) {		//	this is the only thing that worked for me. 800 is arbitrary. Can't be less than 400.
+			if(($(window).scrollTop() + document.body.clientHeight) > $('.footer').position().top){
+				//thanks GiggleStick! https://memo.cash/post/d27f02d5dbd909ec92af26d567afd51f99352cfd3c5ca962dd5801838f31b82f
 				if(!triggered){
 					$('div.container').eq(1)
 					.append('<div class="post rounded box-shadow" id="memo-loading"><p class="center">Loading Never Ending Memo</p></div>');
@@ -34,7 +32,7 @@ function neverEndingMemo(){
 
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
 
-						if(feed.siblings('.post').length === 0){									//	if end of feed
+						if(feed.siblings('.post').length === 0){						//	if end of feed
 							triggered = true; 
 							$('#memo-loading p.center').text('End of feed');			//	Remove loading message
 							return;

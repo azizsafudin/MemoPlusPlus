@@ -55,13 +55,23 @@ function hideMutedUsers(){
 	const unmute_btn = '<button type="button" class="memo-unmute btn btn-info btn-xs" style="margin-left:1em; font-size:0.7em;">Unmute</button>';
 	const hidden_2 = '</p></div>';
 	$('div.post').each(function(index) {
-		var addr = getUserAddress($(this).find('a.profile').first());
+		var profile = $(this).find('a.profile');
+		var addr = getUserAddress(profile.first());
 		if(isMuted(addr) && $(this).children('div.memo-muted-user').length === 0){
 			var string = `${hidden_0}<a href="${base_url}/profile/${addr}" title="${addr}">${trimAddress(addr,6,4)}</a>${hidden_1}${unmute_btn}${hidden_2}`;
 			$(this).children().not('div.post').not('script').remove();	//delete all child elements except script and div.post
 			$(this).prepend(string);
 		}
+		if($(this).children('div.post-header').length == 2){
+		var addr2 = getUserAddress(profile.eq(1));	// get second a.profile
+			if(addr2 !== undefined && isMuted(addr2) && $(this).children('div.memo-muted-user').length === 0){
+				var string = `${hidden_0}<a href="${base_url}/profile/${addr2}" title="${addr2}">${trimAddress(addr2,6,4)}</a>${hidden_1}${unmute_btn}${hidden_2}`;
+				$(this).children().not('div.post').not('script').not('div.post-header:first').remove();	//delete all child elements except script and div.post
+				$(this).append(string);
+			}
+		}
 	});	
+
 	$('div.reply').each(function(index) {
 		var addr = getUserAddress($(this).find('a.image-link').first());
 		if(isMuted(addr) && $(this).children('span.memo-addr').length === 0){
