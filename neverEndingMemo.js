@@ -5,7 +5,6 @@ function neverEndingMemo(){
 		location.href.indexOf('/posts') > -1 
 		|| location.href.indexOf('/polls') > -1
 		|| location.href.indexOf('/feed') > -1 
-		|| location.href.indexOf('/profile/1') > -1			//	WARNING: kinda iffy way to only enable in main profile page and nowhere else.
 		){
 
 		$('p.pagination').last().remove();					//	remove bottom pagination menu.
