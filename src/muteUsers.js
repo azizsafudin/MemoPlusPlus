@@ -9,7 +9,8 @@ function muteUsers(){
 
 	$('button.memo-mute').click(function(e) {						//	Handle mute button click.
 		e.preventDefault();
-		var addr = getUserAddress($(this).siblings('a.profile'));
+		// var addr = getUserAddress($(this).siblings('a.profile'));
+		var addr = $(this).siblings('span.mini-profile-name').data('profile-hash');
 		mute(addr);
 	});	
 	
@@ -22,7 +23,7 @@ function muteUsers(){
 
 function addMuteButton(){
 	const mute_btn = '<button type="button" class="btn btn-danger btn-xs memo-mute" font-size:0.7em;">Mute</button>';
-	$('p.name').each(function(index){
+	$('div.name').each(function(index){
 		var addr = getUserAddress($(this).find('a.profile, .memo-addr a').first());
 		if(!isMuted(addr) && $(this).children('button.memo-mute').length === 0){	//	only add mute button if it doesn't already exist and user not muted.
 			$(this).append(mute_btn);
@@ -73,11 +74,19 @@ function hideMutedUsers(){
 	});	
 
 	$('div.reply').each(function(index) {
-		var addr = getUserAddress($(this).find('a.image-link').first());
+		var addr = $(this).find('span.mini-profile-name').first().data('profile-hash');
 		if(isMuted(addr) && $(this).children('span.memo-addr').length === 0){
 			$(this).text('');
 			$(this).prepend(`<span class="memo-addr"><a href="${base_url}/profile/${addr}" title="${addr}">${trimAddress(addr,6,4)}</a> has been muted.</span>${unmute_btn}`);
 		}
+	});
+
+	$('div.topic-post').each(function(index) {
+		var addr = $(this).find('span.mini-profile-name').first().data('profile-hash');
+			if(isMuted(addr) && $(this).find('div.memo-muted-user').length === 0){
+				$(this).children().remove();
+				$(this).append(`<span class="memo-addr"><a href="${base_url}/profile/${addr}" title="${addr}">${trimAddress(addr,6,4)}</a> has been muted.</span>${unmute_btn}`)
+			}
 	});
 
 	if(location.href.indexOf('/notifications') > -1){

@@ -2,13 +2,13 @@
   "manifest_version": 2,
  
   "name": "Memo++",
-  "version": "0.4.6",
+  "version": "0.4.8",
   "description": "A memo.cash extension",
   "icons": 
   {
-    "16": "ext_16.png",
-    "48": "ext_48.png",
-    "128": "ext_128.png" 
+    "16": "assets/img/ext_16.png",
+    "48": "assets/img/ext_48.png",
+    "128": "assets/img/ext_128.png"
   },
   "permissions": [
     "https://publish.twitter.com/*",
@@ -21,18 +21,18 @@
   "content_scripts": [{
     "css": ["styles.css"],
     "js": [
-            "jquery.min.js",
-            "favico.min.js",
-            "chainfeed.js",
-            "main.js", 
-            "settings.js",
-            "defaults.js",
-            "getUpdates.js",
-            "muteusers.js",
-            "verifyUsers.js",
-            "neverEndingMemo.js",
-            "pollsUI.js",
-            "parseMemos.js"
+            "assets/js/jquery.min.js",
+            "assets/js/favico.min.js",
+            "assets/js/chainfeed.js",
+            "src/main.js", 
+            "src/settings.js",
+            "src/defaults.js",
+            "src/getUpdates.js",
+            "src/muteUsers.js",
+            "src/verifyUsers.js",
+            "src/neverEndingMemo.js",
+            "src/pollsUI.js",
+            "src/parseMemos.js"
           ],
     "matches": ["https://memo.cash/*"],
     "run_at": "document_end"

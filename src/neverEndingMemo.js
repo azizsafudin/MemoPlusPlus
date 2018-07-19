@@ -16,8 +16,8 @@ function neverEndingMemo(){
 		else offset = Number(offset);						//	set offset to int.
 
 		$(window).on("scroll", function() {
-			if(($(window).scrollTop() + document.body.clientHeight) > $('.footer').position().top){
-				//thanks GiggleStick! https://memo.cash/post/d27f02d5dbd909ec92af26d567afd51f99352cfd3c5ca962dd5801838f31b82f
+			// if(($(window).scrollTop() + document.body.clientHeight) > $('.footer').position().top){
+			if(($(window).scrollTop() + $(window).height()) > $('.footer').position().top){
 				if(!triggered){
 					$('div.container').eq(1)
 					.append('<div class="post rounded box-shadow" id="memo-loading"><p class="center">Loading Never Ending Memo</p></div>');
