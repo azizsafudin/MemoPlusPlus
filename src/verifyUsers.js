@@ -55,15 +55,15 @@ function addVerifiedIcon(){
 	var array = url.split('/');
 	var address = array[array.length-1];
 
-	$('p.name').each(function(index){
-		var addr = getUserAddress($(this).find('a.profile').first());
-		if(isVerified(addr) && $(this).children('.memo-verified').length === 0){
+	$('span.mini-profile-name').each(function(index) {
+		var addr = $(this).data('profile-hash');
+		if(isVerified(addr) && $(this).find('.memo-verified').length === 0){
 			$(this).find('a.profile').after(' '+verified_icon);
 		}
 	});
 
 	if(location.href.indexOf('/profile/') > - 1){
-		if(isVerified(address) && $('td.name').children('.memo-verified').length === 0){
+		if(isVerified(address) && $('td.name').find('.memo-verified').length === 0){
 			$('td.name').append(' '+verified_icon);
 			$('div.title h3').children().first().before(verified_icon);
 		}
@@ -72,7 +72,7 @@ function addVerifiedIcon(){
 	if(location.href.indexOf('/topic/') > -1){
 		$('div.name').each(function(index){
 			var addr = getUserAddress($(this).find('a').first());
-			if(isVerified(addr) && $(this).children('.memo-verified').length === 0){
+			if(isVerified(addr) && $(this).find('.memo-verified').length === 0){
 				$(this).find('a').first().after(verified_icon);
 				$('.memo-verified').css('font-size', '0.9em');
 			}
