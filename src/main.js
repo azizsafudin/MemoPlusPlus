@@ -50,7 +50,6 @@ function setupPage(){
 	$('body.dark nav.navbar').css('background', `linear-gradient(#${dark_palette[1]},#${dark_palette[2]})`);
 	// $('body.dark a').css('color', '#'+dark_palette[3]);
 	// $('body.dark .navbar-default .navbar-nav>.active>a').css('border-color','#'+dark_palette[3]);
-	$('.navbar-brand.navbar-left').attr('href', base_url+'/feed')
 
 	if($('#memo-plus-icon').length === 0){
 		$('#navbarDropdown')
