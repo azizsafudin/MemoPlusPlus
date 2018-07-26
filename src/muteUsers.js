@@ -73,11 +73,20 @@ function hideMutedUsers(){
 		}
 	});	
 
-	$('div.reply').each(function(index) {
+	// $('div.reply').each(function(index) {
+	// 	var addr = $(this).find('span.mini-profile-name').first().data('profile-hash');
+	// 	if(isMuted(addr) && $(this).children('span.memo-addr').length === 0){
+	// 		$(this).text('');
+	// 		$(this).prepend(`<span class="memo-addr"><a href="${base_url}/profile/${addr}" title="${addr}">${trimAddress(addr,6,4)}</a> has been muted.</span>${unmute_btn}`);
+	// 	}
+	// });
+
+	$('div.feed-item-post').each(function(index) {
 		var addr = $(this).find('span.mini-profile-name').first().data('profile-hash');
 		if(isMuted(addr) && $(this).children('span.memo-addr').length === 0){
 			$(this).text('');
-			$(this).prepend(`<span class="memo-addr"><a href="${base_url}/profile/${addr}" title="${addr}">${trimAddress(addr,6,4)}</a> has been muted.</span>${unmute_btn}`);
+			$(this).css('margin-bottom','0.5em');
+			$(this).prepend(`<span class="memo-addr"><a href="${base_url}/profile/${addr}" title="${addr}">${addr}</a> has been muted.</span>${unmute_btn}`);
 		}
 	});
 
