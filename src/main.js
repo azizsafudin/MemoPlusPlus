@@ -41,10 +41,38 @@ function setupPage(){
 	
 	$('head').prepend('<link href="'+settings.font.url+'" rel="stylesheet">');	//	Allow users to import fonts from google fonts
 	$('body').css('font-family', '"'+settings.font.name+'", Muli, "Helvetica Neue", Helvetica, Arial, sans-serif');
-	$('body').prepend('<button id="toTop" class="btn btn-success">Back to top</button>');
-	$("#toTop").click(function () {
-		$("html, body").animate({scrollTop: 0}, 1000);
+	
+	//	Footer control stuff
+	$('body').prepend(	`<div class="footer-control">
+							<button id="toTop" class="btn btn-success" title="Go to top">Back to top</button>
+							<button id="showFooter" class="btn btn-primary" title="Show footer">
+								<span class="glyphicon glyphicon-menu-hamburger"></span>
+							</button></div>`);
+
+	$('#toTop').click(function () {
+		$('html, body').animate({scrollTop: 0}, 1000);
 	});
+	$('#showFooter').click(function () {
+		var footer = $('div.footer');
+		footer.toggleClass('showFooter');
+		footer.prev().toggleClass('bottom-margin');
+	});
+
+	//	navbar stuff
+	var c, currentScrollTop = 0, navbar = $('nav');
+   	$(window).scroll(function () {
+		var a = $(window).scrollTop();
+		var b = navbar.height();
+		currentScrollTop = a;
+
+		if (c < currentScrollTop && a > b + b) {
+		navbar.addClass("scrollUp");
+		if(settings.general.show_footer_control) $('.footer-control').fadeIn(500);
+		} else if (c > currentScrollTop && !(a <= b)) {
+		navbar.removeClass("scrollUp");
+		}
+		c = currentScrollTop;
+ 	});
 
 	$('.container').not(':eq(0)')
 		.css('padding-right', '4em')
@@ -52,8 +80,6 @@ function setupPage(){
 	//dark mode changes
 	$('body.dark').css('background', '#'+dark_palette[0]);
 	$('body.dark nav.navbar').css('background', `linear-gradient(#${dark_palette[1]},#${dark_palette[2]})`);
-	// $('body.dark a').css('color', '#'+dark_palette[3]);
-	// $('body.dark .navbar-default .navbar-nav>.active>a').css('border-color','#'+dark_palette[3]);
 
 	if($('#memo-plus-icon').length === 0){
 		$('#navbarDropdown')
