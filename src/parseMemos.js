@@ -10,7 +10,7 @@ function parseMemos(){
 	//	searching through all links
 	$('.message').find('a').each(function(){
 		var context = $(this);
-		twitterEmbed(context);
+		// twitterEmbed(context);
 		instagramEmbed(context);
 		directImageEmbed(context);
 	})

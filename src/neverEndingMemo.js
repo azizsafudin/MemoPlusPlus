@@ -8,7 +8,6 @@ function neverEndingMemo(){
 		){
 
 		$('p.pagination').last().remove();					//	remove bottom pagination menu.
-		$
 		var url = new URL(location.href);					//	construct URL for get request.
 
 		var offset = url.searchParams.get('offset');		//	get current offset from URL
@@ -18,10 +17,11 @@ function neverEndingMemo(){
 		$(window).on("scroll", function() {
 			// if(($(window).scrollTop() + document.body.clientHeight) > $('.footer').position().top){
 			if(($(window).scrollTop() + $(window).height()) > $('.footer').position().top){
+				$('#toTop').fadeIn(1000);
 				if(!triggered){
 					$('div.container').eq(1)
-					.append('<div class="post rounded box-shadow" id="memo-loading"><p class="center">Loading Never Ending Memo</p></div>');
-					
+					.append('<div class="post rounded box-shadow" id="memo-loading"><p class="center">Loading Never Ending Memo <span class="glyphicon glyphicon-repeat spinner"></span></p></div>');
+
 					triggered = true; 							//	prevent this from running more than once each time it reaches the bottom.
 					
 					url.searchParams.set('offset', (offset+25));		//	set offset parameter for get request
@@ -50,7 +50,7 @@ function neverEndingMemo(){
 						triggered = false;
 
 					}).fail(function() {
-				    	alert('Unable to load never ending memos');
+				    	alert('Unable to load new memos.');
 				    	$('#memo-loading').remove();
 				    	setTimeout(function() {											//	allow to try again after 1 second
 						    triggered = false;											//	so it doesn't spam the user

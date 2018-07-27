@@ -41,7 +41,11 @@ function setupPage(){
 	
 	$('head').prepend('<link href="'+settings.font.url+'" rel="stylesheet">');	//	Allow users to import fonts from google fonts
 	$('body').css('font-family', '"'+settings.font.name+'", Muli, "Helvetica Neue", Helvetica, Arial, sans-serif');
-	
+	$('body').prepend('<button id="toTop" class="btn btn-success">Back to top</button>');
+	$("#toTop").click(function () {
+		$("html, body").animate({scrollTop: 0}, 1000);
+	});
+
 	$('.container').not(':eq(0)')
 		.css('padding-right', '4em')
 		.css('padding-left', '4em');
