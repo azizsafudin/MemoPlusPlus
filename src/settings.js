@@ -53,6 +53,18 @@ function settings(){
 											New
 									</label>
 								</div>
+								<div class="checkbox">
+									<input id="posts-threads" type="radio" name="default-posts" class="form-check-input" value="threads"/>
+									<label for="posts-threads" class="form-check-label">
+											Threads
+									</label>
+								</div>
+								<div class="checkbox">
+									<input id="posts-polls" type="radio" name="default-posts" class="form-check-input" value="polls"/>
+									<label for="posts-polls" class="form-check-label">
+											Polls
+									</label>
+								</div>
 							</div>
 						</div>`
 	var settings_1	=		

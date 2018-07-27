@@ -4,7 +4,9 @@ const urls = 	{
 						'ranked': '/posts/ranked',
 						'top': '/posts/top',
 						'personalized': '/posts/personalized',
-						'new': '/posts/new'
+						'new': '/posts/new',
+						'polls': '/polls',
+						'threads': '/posts/threads'
 					},
 					'topics' : {
 						'following': '/topics',

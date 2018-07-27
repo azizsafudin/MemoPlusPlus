@@ -17,6 +17,7 @@ function neverEndingMemo(){
 		$(window).on("scroll", function() {
 			// if(($(window).scrollTop() + document.body.clientHeight) > $('.footer').position().top){
 			if(($(window).scrollTop() + $(window).height()) > $('.footer').position().top){
+				$('#toTop').fadeIn(1000);
 				if(!triggered){
 					$('div.container').eq(1)
 					.append('<div class="post rounded box-shadow" id="memo-loading"><p class="center">Loading Never Ending Memo <span class="glyphicon glyphicon-repeat spinner"></span></p></div>');
