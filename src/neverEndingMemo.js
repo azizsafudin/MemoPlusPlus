@@ -5,6 +5,9 @@ function neverEndingMemo(){
 		location.href.indexOf('/posts') > -1 
 		|| location.href.indexOf('/polls') > -1
 		|| location.href.indexOf('/feed') > -1
+		|| location.href === 'https://memo.cash/'
+		|| location.href === 'https://memo.cash/all'
+		|| location.href.indexOf('/activity') > -1
 		){
 
 		$('p.pagination').last().remove();					//	remove bottom pagination menu.
