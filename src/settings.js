@@ -126,7 +126,7 @@ function settings(){
 		
 	$('[value="'+settings.default_posts+'"]').prop('checked', true);		//	set checked based on current settings
 	$('[value="'+settings.default_topics+'"]').prop('checked', true);
-	$('#show-footer-control').prop('checked', true);
+	$('#show-footer-control').prop('checked', settings.general.show_footer_control);
 
 
 	$('#memo-save').on('click', function(e) {								//	Save settings to localStorage.

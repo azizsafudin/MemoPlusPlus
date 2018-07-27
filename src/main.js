@@ -81,14 +81,17 @@ function setupPage(){
 	$('body.dark').css('background', '#'+dark_palette[0]);
 	$('body.dark nav.navbar').css('background', `linear-gradient(#${dark_palette[1]},#${dark_palette[2]})`);
 
-	if($('#memo-plus-icon').length === 0){
-		$('#navbarDropdown')
-			.css('font-weight','700')
-			.append(' <span class="glyphicon glyphicon-plus" id="memo-plus-icon" style="font-size:0.8em" title="New memo"></span>');
-		}
+	$('.navbar-right').append(`<li class="nav-item btn">
+		<button class="btn btn-info" id="memo-new" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									<span class="glyphicon glyphicon-pencil"></span></button>
+									<ul class="dropdown-menu dropdown-menu-left">
+				                        <li><a href="memo/new">Memo</a></li>
+				                        <li><a href="poll/create">Poll</a></li>
+				                    </ul></li>`);
 
 	var dashboard = $('div.navbar-collapse ul.nav.navbar-nav li a').first().text();
-	$('div.navbar-collapse ul.nav.navbar-nav li a').first().hide();		//	move dashboard into dropdown menu
+	$('div.navbar-collapse ul.nav.navbar-nav li a').slice(0,2).remove();		//	hide dashboard and new
+
 	$('a[href$="settings"]').parent()
 			.before(`<li><a href="/">${dashboard}</a></li>`);
 	
@@ -150,10 +153,12 @@ function setupPage(){
 */
 function generalChanges(){
 	$('.btn')
+		.not('#memo-new')
 		.not('p.posts-nav a')
 		.not('.pagination a')
 		.not('div.dashboard-actions a')
-		.css('border-radius', '1.5em');									//	make all buttons cute and rounded
+		.css('border-radius', '1.5em')
+		.css('outline', 'none');										//	make all buttons cute and rounded
 	$('input, select').css('border-radius', '1.5em');					//	make all inputs rounded and cute
 	$('textarea').css('border-radius', '1em');							//	make all textareas slightly rounded and cute
 }
