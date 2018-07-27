@@ -81,13 +81,8 @@ function setupPage(){
 	$('body.dark').css('background', '#'+dark_palette[0]);
 	$('body.dark nav.navbar').css('background', `linear-gradient(#${dark_palette[1]},#${dark_palette[2]})`);
 
-	// if($('#memo-plus-icon').length === 0){
-	// 	$('#navbarDropdown')
-	// 		.css('font-weight','700')
-	// 		.append(' <span class="glyphicon glyphicon-plus" id="memo-plus-icon" style="font-size:0.8em" title="New memo"></span>');
-	// 	}
 	$('.navbar-right').append(`<li class="nav-item btn">
-		<button class="btn btn-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		<button class="btn btn-info" id="memo-new" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 									<span class="glyphicon glyphicon-pencil"></span></button>
 									<ul class="dropdown-menu dropdown-menu-left">
 				                        <li><a href="memo/new">Memo</a></li>
@@ -158,6 +153,7 @@ function setupPage(){
 */
 function generalChanges(){
 	$('.btn')
+		.not('#memo-new')
 		.not('p.posts-nav a')
 		.not('.pagination a')
 		.not('div.dashboard-actions a')
