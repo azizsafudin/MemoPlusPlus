@@ -97,6 +97,18 @@ function settings(){
 								</div>
 							</div>
 						</div>`
+	var settings_2	=		
+						`<div class="form-group row">
+							<label class="col-form-label col-sm-3">General Settings</label>
+							<div class="col-sm-9">
+								<div class="checkbox">
+									<input id="show-footer-control" type="checkbox" name="general" class="form-check-input"/>
+									<label for="show-footer-control" class="form-check-label">
+										Show footer control
+									</label>
+								</div>
+							</div>
+						</div>`
 	var save_btn =			
 						`<br>
 						<div class="form-group">
@@ -108,12 +120,13 @@ function settings(){
 						</div>`						
 	var template_end =	'</form>';
 
-	var template = template_start + settings_0 + settings_1 + save_btn + template_end;
+	var template = template_start + settings_2 + settings_0 + settings_1 + save_btn + template_end;
 
 	$('#settings-form').after(template);									//	add form after memo's default form
 		
 	$('[value="'+settings.default_posts+'"]').prop('checked', true);		//	set checked based on current settings
 	$('[value="'+settings.default_topics+'"]').prop('checked', true);
+	$('#show-footer-control').prop('checked', true);
 
 
 	$('#memo-save').on('click', function(e) {								//	Save settings to localStorage.
@@ -124,6 +137,7 @@ function settings(){
 
 		settings.default_posts = posts;
 		settings.default_topics = topics;
+		settings.general.show_footer_control = $('#show-footer-control').prop('checked');
 		setSettings(settings);
 
 		$('span#memo-saved').show();

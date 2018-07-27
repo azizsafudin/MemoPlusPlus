@@ -41,9 +41,21 @@ function setupPage(){
 	
 	$('head').prepend('<link href="'+settings.font.url+'" rel="stylesheet">');	//	Allow users to import fonts from google fonts
 	$('body').css('font-family', '"'+settings.font.name+'", Muli, "Helvetica Neue", Helvetica, Arial, sans-serif');
-	$('body').prepend('<button id="toTop" class="btn btn-success">Back to top</button>');
-	$("#toTop").click(function () {
-		$("html, body").animate({scrollTop: 0}, 1000);
+	
+	//	Footer control stuff
+	$('body').prepend(	`<div class="footer-control">
+							<button id="toTop" class="btn btn-success" title="Go to top">Back to top</button>
+							<button id="showFooter" class="btn btn-primary" title="Show footer">
+								<span class="glyphicon glyphicon-menu-hamburger"></span>
+							</button></div>`);
+	if(settings.general.show_footer_control) $('.footer-control').show();
+	$('#toTop').click(function () {
+		$('html, body').animate({scrollTop: 0}, 1000);
+	});
+	$('#showFooter').click(function () {
+		var footer = $('div.footer');
+		footer.toggleClass('showFooter');
+		footer.prev().toggleClass('bottom-margin');
 	});
 
 	$('.container').not(':eq(0)')

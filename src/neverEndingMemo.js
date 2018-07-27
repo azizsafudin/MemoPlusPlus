@@ -4,7 +4,7 @@ function neverEndingMemo(){
 	if(
 		location.href.indexOf('/posts') > -1 
 		|| location.href.indexOf('/polls') > -1
-		|| location.href.indexOf('/feed') > -1 
+		|| location.href.indexOf('/feed') > -1
 		){
 
 		$('p.pagination').last().remove();					//	remove bottom pagination menu.
@@ -16,8 +16,9 @@ function neverEndingMemo(){
 
 		$(window).on("scroll", function() {
 			// if(($(window).scrollTop() + document.body.clientHeight) > $('.footer').position().top){
-			if(($(window).scrollTop() + $(window).height()) > $('.footer').position().top){
-				$('#toTop').fadeIn(1000);
+			// if(($(window).scrollTop() + $(window).height()) > $('.footer').position().top){
+   			if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+				$('.footer-control').fadeIn(1000);
 				if(!triggered){
 					$('div.container').eq(1)
 					.append('<div class="post rounded box-shadow" id="memo-loading"><p class="center">Loading Never Ending Memo <span class="glyphicon glyphicon-repeat spinner"></span></p></div>');
@@ -32,17 +33,14 @@ function neverEndingMemo(){
 
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
 
-						if(feed.siblings('.post').length === 0){						//	if end of feed
+						if(feed.siblings('.post, .threads').length === 0){						//	if end of feed
 							triggered = true; 
 							$('#memo-loading p.center').text('End of feed');			//	Remove loading message
 							return;
 						}
 
 						feed.siblings('.posts-nav, .pagination, br').remove();			//	remove pagination and menu items.
-						if(location.href.indexOf('/profile/1') > -1 || location.href.indexOf('/feed') > -1){
-							feed.siblings('table, p, div.center').remove();				//	remove other profile page stuff
-						}
-
+						
 						$('div.container').eq(1).append(feed.parent().clone().html());	//	clone the parent of the .message nodes.
 
 						updateView();

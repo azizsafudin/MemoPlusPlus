@@ -18,6 +18,9 @@ const urls = 	{
 const default_prefs =  	{
 							'default_posts' : 'ranked',
 							'default_topics' : 'all',
+							'general' : {
+								'show_footer_control': false,
+							},
 							'font': {
 								'url' : '#',
 								'name' : '#'	
