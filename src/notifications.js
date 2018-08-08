@@ -3,7 +3,7 @@ function notificationPage(){
         var notifs = getNotifications();
         if(notifs.length > 0){
         for(var i=0; i < notifs.length; i++){
-            $('tbody').prepend(`<tr>
+            $('tbody').prepend(`<tr class="memo-notifications">
                     <td style="color:lightblue;">
                         <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
                     </td>
@@ -18,7 +18,7 @@ function notificationPage(){
                     </td>
                 </tr>`);   
         }
-        $('tbody').prepend(`<tr>
+        $('tbody').prepend(`<tr class="memo-notifications">
                 <td>
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 </td>
@@ -33,7 +33,7 @@ function notificationPage(){
 
     $('#dismiss-btn').on('click', function(){
         clearNotifications();
-        location.reload();
+        $('.memo-notifications').remove();
     });
 }
 
