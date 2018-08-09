@@ -19,7 +19,11 @@ const default_prefs =  	{
 							'default_posts' : 'ranked',
 							'default_topics' : 'all',
 							'general' : {
-								'show_footer_control': false,
+								'show_footer_control': true,
+							},
+							'tags':{
+								'enable_hashtags': true,
+								'enable_usertags': false,
 							},
 							'font': {
 								'url' : '#',

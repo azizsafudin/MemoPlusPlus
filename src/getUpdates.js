@@ -3,7 +3,20 @@ function getUpdates(){
 		res.forEach(function(item) {
 			if (item.data) {
 				let prefix = ab2hex(new Uint8Array(item.data[0].buf.data).buffer);
-
+        if(prefix === '6d02'){  //  posts 0x6d02 message(217)
+          if(item.data.length > 1) {
+            let message = ab2str(new Uint8Array(item.data[1].buf.data).buffer)
+            let user = getUser();
+            let regex = new RegExp("@" + user.name, "i"); //get mentions
+            if(message.match(regex)){
+              let sender = item.sender[0];
+              let txhash = item.tx.hash;
+              addMentionNotif(sender, txhash, message);
+              notification_count++;
+              updateNotifications();          
+            }
+          }
+        }
 				if(prefix === '6d03'){  //  replies 0x6d03 txhash(30), message(184)
 					if(item.data.length > 1) {
             let txhash = ab2hex(new Uint8Array(item.data[1].buf.data.slice().reverse()).buffer);

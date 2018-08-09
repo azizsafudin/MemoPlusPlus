@@ -2,7 +2,7 @@
   "manifest_version": 2,
  
   "name": "Memo++",
-  "version": "0.4.10",
+  "version": "0.5.0",
   "description": "A memo.cash extension",
   "icons": 
   {
@@ -28,6 +28,9 @@
             "src/settings.js",
             "src/defaults.js",
             "src/getUpdates.js",
+            "src/notifications.js",
+            "src/hashtag.js",
+            "src/search.js",
             "src/muteUsers.js",
             "src/verifyUsers.js",
             "src/neverEndingMemo.js",

@@ -13,9 +13,13 @@ $(document).ready(function() {
 	updateNotifications();		//	Applies notifications stuff
 	
 	getUpdates();				//	sets up chainfeed.listen
+	notificationPage();			//	handles stuff on /notifications
 
 	neverEndingMemo();			//	Loads new memo once the bottom is reached
 	mutationHandler();			//	Reapplies extension when DOM changes
+	hashtagHandler();
+	searchHandler();
+	
 	$("body").show();
 	
 	console.log('Memo++ loaded');
@@ -51,6 +55,7 @@ function setupPage(){
 
 	$('#toTop').click(function () {
 		$('html, body').animate({scrollTop: 0}, 1000);
+		$('.footer-control').fadeOut(1000);
 	});
 	$('#showFooter').click(function () {
 		var footer = $('div.footer');
@@ -227,9 +232,13 @@ function updateNotifications(){
 function getUser(){
     if(!!localStorage.WalletPassword){
         var address = getUserAddress($('a[href*="profile/"]').first());
-        return {
-            'address' : address
+        var name = $('li.nav-item a.nav-link').first().text().replace(/\s/g,''); //	may break in the future.
+        var user = {
+            'address' : address,
+            'name'	: name
         };
+        localStorage.setItem('memo-user', JSON.stringify(user));
+        return user;
     }
     return false;
 }

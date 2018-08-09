@@ -2,10 +2,19 @@
 	General method that loops through all memos on the page.
 */
 function parseMemos(){
-	// $('.message').each(function(){
-	// 	var context = $(this);
-	// 	nameTag(context);
-	// });
+	var settings = getSettings();
+	if(settings.tags.enable_usertags){
+		$('.message, .reply').each(function(){
+		var context = $(this);
+		nameTag(context);
+		});
+	}
+	if(settings.tags.enable_hashtags){
+		$('.message, .reply').each(function(){
+		var context = $(this);
+		hashtag(context);
+		});
+	}	
 
 	//	searching through all links
 	$('.message').find('a').each(function(){
@@ -23,6 +32,12 @@ function nameTag(context){
 	var text = context.html();
     out = text.replace(/@([a-z\d_]+)/ig, '<a href="https://memo.cash/profiles?s=$1">@$1</a>'); 
     context.html(out); 
+}
+
+function hashtag(context){
+	var text = context.html();
+	out = text.replace(/#(\w*[0-9a-zA-Z]+\w*[0-9a-zA-Z])/g, ' <a href="hashtag/$1">#$1</a>');
+	context.html(out); 
 }
 
 /*
