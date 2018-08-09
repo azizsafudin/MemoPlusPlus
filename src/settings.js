@@ -104,7 +104,19 @@ function settings(){
 								<div class="checkbox">
 									<input id="show-footer-control" type="checkbox" name="general" class="form-check-input"/>
 									<label for="show-footer-control" class="form-check-label">
-										Show footer control
+										Show footer control (The "back to top" button)
+									</label>
+								</div>
+								<div class="checkbox">
+									<input id="enable-hashtags" type="checkbox" name="general" class="form-check-input"/>
+									<label for="enable-hashtags" class="form-check-label">
+										Enable #hashtags (Breaks twitter embeds)
+									</label>
+								</div>
+								<div class="checkbox">
+									<input id="enable-usertags" type="checkbox" name="general" class="form-check-input"/>
+									<label for="enable-usertags" class="form-check-label">
+										Enable @usertag (Breaks twitter embeds)
 									</label>
 								</div>
 							</div>
@@ -127,6 +139,8 @@ function settings(){
 	$('[value="'+settings.default_posts+'"]').prop('checked', true);		//	set checked based on current settings
 	$('[value="'+settings.default_topics+'"]').prop('checked', true);
 	$('#show-footer-control').prop('checked', settings.general.show_footer_control);
+	$('#enable-hashtags').prop('checked', settings.tags.enable_hashtags);
+	$('#enable-usertags').prop('checked', settings.tags.enable_usertags);
 
 
 	$('#memo-save').on('click', function(e) {								//	Save settings to localStorage.
@@ -138,6 +152,9 @@ function settings(){
 		settings.default_posts = posts;
 		settings.default_topics = topics;
 		settings.general.show_footer_control = $('#show-footer-control').prop('checked');
+		settings.tags.enable_hashtags = $('#enable-hashtags').prop('checked');
+		settings.tags.enable_usertags = $('#enable-usertags').prop('checked');
+
 		setSettings(settings);
 
 		$('span#memo-saved').show();

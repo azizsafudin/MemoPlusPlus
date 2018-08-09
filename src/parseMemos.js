@@ -2,11 +2,19 @@
 	General method that loops through all memos on the page.
 */
 function parseMemos(){
-	$('.message, .reply').each(function(){
+	var settings = getSettings();
+	if(settings.tags.enable_usertags){
+		$('.message, .reply').each(function(){
 		var context = $(this);
-		// nameTag(context);
+		nameTag(context);
+		});
+	}
+	if(settings.tags.enable_hashtags){
+		$('.message, .reply').each(function(){
+		var context = $(this);
 		hashtag(context);
-	});
+		});
+	}	
 
 	//	searching through all links
 	$('.message').find('a').each(function(){
