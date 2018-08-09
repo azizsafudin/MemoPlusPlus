@@ -30,6 +30,7 @@
             "src/getUpdates.js",
             "src/notifications.js",
             "src/hashtag.js",
+            "src/search.js",
             "src/muteUsers.js",
             "src/verifyUsers.js",
             "src/neverEndingMemo.js",
