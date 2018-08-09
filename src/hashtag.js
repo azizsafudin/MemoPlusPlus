@@ -40,10 +40,10 @@ function hashtagHandler(){
             }
             skip += per_page;
             limit += per_page;
+            triggered = false;
             }else{
               $('div.threads').append('<div><p class="center" id="memo-end">No more memos found.</p></div>')
             }
-            triggered = false;
           });
         }
       }
