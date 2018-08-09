@@ -37,7 +37,7 @@ function neverEndingMemo(){
 						var feed = html.find('div.container').eq(1).children();			//	select children elements of main feed
 
 						if(feed.siblings('.post, .threads').length === 0){						//	if end of feed
-							triggered = true; 
+							//triggered = true; 
 							$('#memo-loading p.center').text('End of feed');			//	Remove loading message
 							return;
 						}

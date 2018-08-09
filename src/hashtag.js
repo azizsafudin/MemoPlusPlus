@@ -1,6 +1,7 @@
 function hashtagHandler(){
   var skip = 0;
-  var limit = 25;
+  var per_page = 25;
+  var limit = per_page;
 
   if(location.href.indexOf('/hashtag/') > -1){
     var hashtag = location.pathname.split('/').pop();
@@ -13,35 +14,34 @@ function hashtagHandler(){
     $('div.threads').append(loading_msg);
 
     getPostsByHashtag(hashtag, skip, limit, function(res){
-      console.log(res);
       $('#memo-loading').remove();
       if(res.confirmed.length > 1){
       for(var i=0; i < res.confirmed.length; i++){
         $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p>Posted on ${timeConverter(res.confirmed[i].block_time)}</div>`);
       }
-      skip += limit;
-      limit += limit;
+      skip += per_page;
+      limit += per_page;
       }else{
         $('div.threads').append('<div><p class="center">No memos found.</p></div>')
       }
     });
     $(window).on("scroll", function() {
-        if($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        if($(window).scrollTop() + $(window).height() > $(document).height() - 100 && $('#memo-end').length === 0) {
         
         if(!triggered){
           main.append(loading_msg);
           triggered = true;
           
-          getPostsByHashtag(hashtag, 0, 100, function(res){
+          getPostsByHashtag(hashtag, skip, limit, function(res){
             $('#memo-loading').remove();
             if(res.confirmed.length > 1){
             for(var i=0; i < res.confirmed.length; i++){
               $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p></div>`);
             }
-            skip += limit;
-            limit += limit;
+            skip += per_page;
+            limit += per_page;
             }else{
-              $('div.threads').append('<div><p class="center">No more memos found.</p></div>')
+              $('div.threads').append('<div><p class="center" id="memo-end">No more memos found.</p></div>')
             }
             triggered = false;
           });

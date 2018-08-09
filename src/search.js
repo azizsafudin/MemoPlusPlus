@@ -1,6 +1,7 @@
 function searchHandler(){
   var skip = 0;
-  var limit = 25;
+  var per_page = 25;
+  var limit = per_page;
 
   if(location.href.indexOf('/search') > -1){
   	var url = new URL(location.href);
@@ -20,8 +21,8 @@ function searchHandler(){
 	      for(var i=0; i < res.confirmed.length; i++){
 	        $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p>Posted on ${timeConverter(res.confirmed[i].block_time)}</div>`);
 	      }
-	      skip += limit;
-	      limit += limit;
+	      skip += per_page;
+	      limit += per_page;
 	      }else{
 	        $('div.threads').append('<div><p class="center">No memos found.</p></div>')
 	      }
@@ -33,14 +34,14 @@ function searchHandler(){
 	          main.append(loading_msg);
 	          triggered = true;
 	          
-	          getPostsBySearch(query, 0, 100, function(res){
+	          getPostsBySearch(query, skip, limit, function(res){
 	            $('#memo-loading').remove();
 	            if(res.confirmed.length > 1){
 	            for(var i=0; i < res.confirmed.length; i++){
 	              $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p></div>`);
 	            }
-	            skip += limit;
-	            limit += limit;
+	            skip += per_page;
+	            limit += per_page;
 	            }else{
 	              $('div.threads').append('<div><p class="center">No more memos found.</p></div>')
 	            }
