@@ -36,7 +36,7 @@ function hashtagHandler(){
             $('#memo-loading').remove();
             if(res.confirmed.length > 1){
             for(var i=0; i < res.confirmed.length; i++){
-              $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p></div>`);
+              $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p>Posted on ${timeConverter(res.confirmed[i].block_time)}</div>`);
             }
             skip += per_page;
             limit += per_page;
