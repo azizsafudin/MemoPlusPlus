@@ -4,7 +4,7 @@
 function parseMemos(){
 	$('.message, .reply').each(function(){
 		var context = $(this);
-		nameTag(context);
+		// nameTag(context);
 		hashtag(context);
 	});
 
@@ -28,7 +28,7 @@ function nameTag(context){
 
 function hashtag(context){
 	var text = context.html();
-	out = text.replace(/#(\w*[0-9a-zA-Z]+\w*[0-9a-zA-Z])/g, ' <a href="#">#$1</a>');
+	out = text.replace(/#(\w*[0-9a-zA-Z]+\w*[0-9a-zA-Z])/g, ' <a href="hashtag/$1">#$1</a>');
 	context.html(out); 
 }
 

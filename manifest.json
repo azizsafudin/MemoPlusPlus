@@ -29,6 +29,7 @@
             "src/defaults.js",
             "src/getUpdates.js",
             "src/notifications.js",
+            "src/hashtag.js",
             "src/muteUsers.js",
             "src/verifyUsers.js",
             "src/neverEndingMemo.js",

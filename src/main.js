@@ -17,6 +17,7 @@ $(document).ready(function() {
 
 	neverEndingMemo();			//	Loads new memo once the bottom is reached
 	mutationHandler();			//	Reapplies extension when DOM changes
+	hashtagHandler();
 	$("body").show();
 	
 	console.log('Memo++ loaded');
