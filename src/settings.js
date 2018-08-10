@@ -1,32 +1,31 @@
-
 /*
 	Get user settings
 */
-function getSettings(){
-	var settings = localStorage.getItem('memo-settings');
+function getSettings() {
+    var settings = localStorage.getItem('memo-settings');
 
-	if(!settings){
-		localStorage.setItem('memo-settings', JSON.stringify(default_prefs));
-		return default_prefs;
-	}
-	return JSON.parse(settings);
+    if (!settings) {
+        localStorage.setItem('memo-settings', JSON.stringify(default_prefs));
+        return default_prefs;
+    }
+    return JSON.parse(settings);
 }
 
-function setSettings(settings){
-	localStorage.setItem('memo-settings', JSON.stringify(settings));
+function setSettings(settings) {
+    localStorage.setItem('memo-settings', JSON.stringify(settings));
 }
 
 /*
 	Set user settings form in the settings page.
 */
-function settings(){
-	var settings = getSettings();
+function settings() {
+    var settings = getSettings();
 
-	if(window.location.href.indexOf("/settings") > -1) {
+    if (window.location.href.indexOf("/settings") > -1) {
 
-	var template_start =	'<h2>Memo++ settings</h2><br><form id="memo-settings-form" class="form-horizontal">';
-	var settings_0	=		
-						`<div class="form-group row">
+        var template_start = '<h2>Memo++ settings</h2><br><form id="memo-settings-form" class="form-horizontal">';
+        var settings_0 =
+            `<div class="form-group row">
 							<label class="col-form-label col-sm-3">Default Posts Tab</label>
 							<div class="col-sm-9">
 								<div class="checkbox">
@@ -67,8 +66,8 @@ function settings(){
 								</div>
 							</div>
 						</div>`
-	var settings_1	=		
-						`<div class="form-group row">
+        var settings_1 =
+            `<div class="form-group row">
 							<label class="col-form-label col-sm-3">Default Topics Tab</label>
 							<div class="col-sm-9">
 								<div class="checkbox">
@@ -97,8 +96,8 @@ function settings(){
 								</div>
 							</div>
 						</div>`
-	var settings_2	=		
-						`<div class="form-group row">
+        var settings_2 =
+            `<div class="form-group row">
 							<label class="col-form-label col-sm-3">General Settings</label>
 							<div class="col-sm-9">
 								<div class="checkbox">
@@ -121,45 +120,45 @@ function settings(){
 								</div>
 							</div>
 						</div>`
-	var save_btn =			
-						`<br>
+        var save_btn =
+            `<br>
 						<div class="form-group">
 						<div class="col-sm-3"></div>
 						<div class="col-sm-9">
 							<input type="button" id="memo-save" class="btn btn-success" value="Save memo++ settings">
 							<span id="memo-saved" style="display:none;">Saved!</span>
 						</div>
-						</div>`						
-	var template_end =	'</form>';
+						</div>`
+        var template_end = '</form>';
 
-	var template = template_start + settings_2 + settings_0 + settings_1 + save_btn + template_end;
+        var template = template_start + settings_2 + settings_0 + settings_1 + save_btn + template_end;
 
-	$('#settings-form').after(template);									//	add form after memo's default form
-		
-	$('[value="'+settings.default_posts+'"]').prop('checked', true);		//	set checked based on current settings
-	$('[value="'+settings.default_topics+'"]').prop('checked', true);
-	$('#show-footer-control').prop('checked', settings.general.show_footer_control);
-	$('#enable-hashtags').prop('checked', settings.tags.enable_hashtags);
-	$('#enable-usertags').prop('checked', settings.tags.enable_usertags);
+        $('#settings-form').after(template); //	add form after memo's default form
+
+        $('[value="' + settings.default_posts + '"]').prop('checked', true); //	set checked based on current settings
+        $('[value="' + settings.default_topics + '"]').prop('checked', true);
+        $('#show-footer-control').prop('checked', settings.general.show_footer_control);
+        $('#enable-hashtags').prop('checked', settings.tags.enable_hashtags);
+        $('#enable-usertags').prop('checked', settings.tags.enable_usertags);
 
 
-	$('#memo-save').on('click', function(e) {								//	Save settings to localStorage.
-		e.preventDefault();
+        $('#memo-save').on('click', function(e) { //	Save settings to localStorage.
+            e.preventDefault();
 
-		var posts = $('[name="default-posts"]:checked').val();				//	Get values from form.
-		var topics = $('[name="default-topics"]:checked').val();
+            var posts = $('[name="default-posts"]:checked').val(); //	Get values from form.
+            var topics = $('[name="default-topics"]:checked').val();
 
-		settings.default_posts = posts;
-		settings.default_topics = topics;
-		settings.general.show_footer_control = $('#show-footer-control').prop('checked');
-		settings.tags.enable_hashtags = $('#enable-hashtags').prop('checked');
-		settings.tags.enable_usertags = $('#enable-usertags').prop('checked');
+            settings.default_posts = posts;
+            settings.default_topics = topics;
+            settings.general.show_footer_control = $('#show-footer-control').prop('checked');
+            settings.tags.enable_hashtags = $('#enable-hashtags').prop('checked');
+            settings.tags.enable_usertags = $('#enable-usertags').prop('checked');
 
-		setSettings(settings);
+            setSettings(settings);
 
-		$('span#memo-saved').show();
-		location.reload();
-	})
+            $('span#memo-saved').show();
+            location.reload();
+        })
 
-	}
+    }
 }
