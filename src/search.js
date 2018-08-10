@@ -4,12 +4,15 @@ function searchHandler() {
     var limit = 25;
     var isSearchPage = location.href.indexOf('/search') > -1;
     var isHashtagPage = location.href.indexOf('/hashtag/') > -1;
+    var title = '';
     if (isSearchPage) {
         var url = new URL(location.href);
         var query = url.searchParams.get('q');
+        title = 'Search';
     }
     if (isHashtagPage) {
-    	var query = "#"+location.pathname.split('/').pop();
+        var query = "#" + location.pathname.split('/').pop();
+        title = 'Hashtags';
     }
     if (query !== null && (isSearchPage || isHashtagPage)) {
         var main = $('div.container:eq(1)');
@@ -18,8 +21,17 @@ function searchHandler() {
 
         main.children().remove();
         main.append('<div class="threads"></div>');
-
+        main.prepend('<div><h2 class="center" style="margin-bottom:1em;">' + title + '</h2></div>');
         $('div.threads').append(loading_msg);
+
+        getRecentHashtags(20, function(tags) {
+            var list = '';
+            for (var i = 0; i < tags.length; i++) {
+                list += `<a href="/hashtag/${tags[i].substring(1)}">${tags[i]}</a> `;
+            }
+            $('div.threads').prepend('<h4>Recent Hashtags: ' + list + '</h4> ');
+        });
+
         getPostsBySearch(regexq, skip, limit, function(res) {
             $('#memo-loading').remove();
             if (res.confirmed.length > 1) {
@@ -113,6 +125,58 @@ function getPostsBySearch(query, skip, limit, callback) {
         return r.json();
     }).then(function(r) {
         callback(r);
+    })
+}
+
+function getRecentHashtags(count, callback) {
+    var query = {
+        "request": {
+            "encoding": {
+                "b1": "hex"
+            },
+            "aggregate": [{
+                    "$match": {
+                        "b1": "6d02",
+                        "s2": { "$regex": "\\#", "$options": "i" }
+                    }
+                },
+                { "$sort": { "block_time": -1 } },
+                { "$limit": count }
+            ],
+            "project": {
+                "b1": 1,
+                "b2": 1,
+                "tx": 1,
+                "block_index": 1,
+                "block_time": 1,
+                "_id": 0
+            }
+        },
+        "response": {
+            "encoding": {
+                "b1": "hex",
+                "b2": "utf8"
+            }
+        }
+    }
+    var b64 = btoa(JSON.stringify(query));
+    var url = "https://bitdb.network/q/" + b64;
+    var header = {
+        headers: { key: "qzyhyxedrslf39v7l9d62f0mnlttwl4tzsd7wawh0t" }
+    }
+    fetch(url, header).then(function(r) {
+        return r.json();
+    }).then(function(r) {
+        var array = [];
+        for (var i = 0; i < r.confirmed.length; i++) {
+            var result = r.confirmed[i].b2.match(/#(\w*[0-9a-zA-Z]+\w*[0-9a-zA-Z])/g)
+            array.push(...result);
+            if (array.length > count) {
+                array.slice(0, count);
+                break;
+            }
+        }
+        callback(array);
     })
 }
 
