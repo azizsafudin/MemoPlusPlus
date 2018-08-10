@@ -36,7 +36,11 @@ function searchHandler() {
             $('#memo-loading').remove();
             if (res.confirmed.length > 1) {
                 for (var i = 0; i < res.confirmed.length; i++) {
-                    $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p>Posted on ${timeConverter(res.confirmed[i].block_time)}</div>`);
+                    if (res.confirmed[i].b1 === '6d0c') {
+                        $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b3}</a></p>Posted at ${timeConverter(res.confirmed[i].block_time)} in <a href="topic/${res.confirmed[i].b2}">${res.confirmed[i].b2}</a></div>`);
+                    } else {
+                        $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p>Posted at ${timeConverter(res.confirmed[i].block_time)}</div>`);
+                    }
                 }
                 skip += limit;
             } else {
@@ -54,7 +58,11 @@ function searchHandler() {
                         $('#memo-loading').remove();
                         if (res.confirmed.length > 1) {
                             for (var i = 0; i < res.confirmed.length; i++) {
-                                $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p>Posted on ${timeConverter(res.confirmed[i].block_time)}</div>`);
+                                if (res.confirmed[i].b1 === '6d0c') {
+                                    $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b3}</a></p>Posted at ${timeConverter(res.confirmed[i].block_time)} in <a href="topic/${res.confirmed[i].b2}">${res.confirmed[i].b2}</a></div>`);
+                                } else {
+                                    $('div.threads').append(`<div><p><a href="post/${res.confirmed[i].tx}">${res.confirmed[i].b2}</a></p>Posted at ${timeConverter(res.confirmed[i].block_time)}</div>`);
+                                }
                             }
                             skip += limit;
                             triggered = false;
@@ -72,9 +80,9 @@ function searchHandler() {
 
 function addSearchBar() {
     const bar = `<form class="navbar-form navbar-right">
-				<div class="form-group input-group-sm">
-				<input type="text" class="form-control" placeholder="Search" id="search-bar">
-				</div></form>`
+                <div class="form-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Search" id="search-bar">
+                </div></form>`
     $('div.navbar-collapse').append(bar);
     $('#search-bar').on('keyup', function(e) {
         var q = $('#search-bar').val();
@@ -92,8 +100,16 @@ function getPostsBySearch(query, skip, limit, callback) {
             },
             "aggregate": [{
                     "$match": {
-                        "b1": "6d02",
-                        "s2": { "$regex": query, "$options": "i" }
+                        "$or": [{
+                                "b1": "6d0c",
+                                "s2": { "$regex": query, "$options": "i" },
+                                "s3": { "$regex": query, "$options": "i" }
+                            },
+                            {
+                                "b1": "6d02",
+                                "s2": { "$regex": query, "$options": "i" }
+                            }
+                        ]
                     }
                 },
                 { "$sort": { "block_time": -1 } },
@@ -103,6 +119,7 @@ function getPostsBySearch(query, skip, limit, callback) {
             "project": {
                 "b1": 1,
                 "b2": 1,
+                "b3": 1,
                 "tx": 1,
                 "block_index": 1,
                 "block_time": 1,
@@ -112,7 +129,8 @@ function getPostsBySearch(query, skip, limit, callback) {
         "response": {
             "encoding": {
                 "b1": "hex",
-                "b2": "utf8"
+                "b2": "utf8",
+                "b3": "utf8"
             }
         }
     }
