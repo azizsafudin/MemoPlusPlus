@@ -8,11 +8,11 @@ function searchHandler() {
     if (isSearchPage) {
         var url = new URL(location.href);
         var query = url.searchParams.get('q');
-        title = 'Search';
+        title = 'Showing memos containing: "'+query+'"';
     }
     if (isHashtagPage) {
         var query = "#" + location.pathname.split('/').pop();
-        title = 'Hashtags';
+        title = 'Showing memos with hashtag: '+query; 
     }
     if (query !== null && (isSearchPage || isHashtagPage)) {
         var main = $('div.container:eq(1)');
@@ -143,7 +143,10 @@ function getPostsBySearch(query, skip, limit, callback) {
         return r.json();
     }).then(function(r) {
         callback(r);
-    })
+    }).catch(function (err){
+        alert('Search error');
+        console.error(err);
+    });
 }
 
 function getRecentHashtags(count, callback) {
@@ -195,7 +198,10 @@ function getRecentHashtags(count, callback) {
             }
         }
         callback(array);
-    })
+    }).catch(function (err){
+        alert('Search error');
+        console.error(err);
+    });
 }
 
 function timeConverter(UNIX_timestamp) {
