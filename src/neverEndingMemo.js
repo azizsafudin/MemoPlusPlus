@@ -42,7 +42,7 @@ function neverEndingMemo() {
                             return;
                         }
 
-                        feed.siblings('.posts-nav, .pagination, br').remove(); //	remove pagination and menu items.
+                        feed.siblings('.posts-nav, .pagination, br, div.center').remove(); //	remove pagination and menu items.
 
                         $('div.container').eq(1).append(feed.parent().clone().html()); //	clone the parent of the .message nodes.
 
