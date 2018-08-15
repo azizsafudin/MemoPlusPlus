@@ -38,7 +38,21 @@ const default_verified_list = [
     // 	'1HezZbHLhd6fcKs1ytUxDjSF3mcUdHiUeL',	//modulus (memo++)		proof: https://github.com/xmodulus/memoplusplus
     // 	'1HLULEeaeygPEXurq6zwFq2DSXNSKUayUa',	//Roger Ver 			proof: https://twitter.com/rogerkver/status/998221922105147398
     // 	'1L9D9Zv9BFqTQScFJzz8rXiUjnmnGxRBvk', 	//Craig Wright			proof: https://twitter.com/ProfFaustus/status/989530126407872513
-    // 	'183xMuyW9BQuTv4uhE9Pki9gZG1xvNFVA',	//BitcoinUnlmited 		proof: https://twitter.com/bitcoinunlimit/status/991530312130707456?s=21 & https://memo.cash/post/46487b9d4966c11084ea7c17e72e2f26f54ba235a823b276d68c25f3d0520ed8
+    // 	'18Hy2L4xHoWLSsoWwdgKR3eLaBgHGc9Zct',	//BitcoinUnlmited 		proof: https://twitter.com/bitcoinunlimit/status/991530312130707456
+    //  '13tPfrbpbMTdng7fgV7bsVPhFrfgTVyszG',   //Gavin Andresen        proof: https://twitter.com/gavinandresen/status/990281861938270208 AND https://twitter.com/gavinandresen/status/990280065731743749
+    //  '1CCEaBCXdnPpycdpodXu5F8xLrZtwpnhmX',   //CoinText              proof: https://twitter.com/CoinText/status/1000447604193280001
+    //  '1G2qwNU7rr8pQLpGkztv2zGnhBrX9EEpaf',   //eatBCH                proof: https://twitter.com/eatBCH/status/989974947102642176
+    //  '1KNaY7dD9eVvUw6KyTZfVdVSh55cuhBKhE',   //cgcardona             proof: https://twitter.com/cgcardona/status/985590455948603392
+    //  '1EDtyAxn8zh9qBdWxdCyhY7AFzLcHvFrtE',   //freetrader            proof: https://ftrader.github.io/posts/misc/welcome.html
+    //  '1P8iGT3bhPDPQfDEC1aRk3JCwKG1Naiw4G',   //r0bbot                proof: https://twitter.com/r0bbot/status/1004171361453998081   
+    
+    //  '183xMuyW9BQuTv4uhE9Pki9gZG1xvNFVA',    //Peter Tschipper       proof: ???
+    //  '17R9gr4GUfqVwLriAomJ5RqmTJievnQQ5Z',   //Ryan X. Charles       proof: ???
+    //  '1JaGzuXnxvRaSuyrrduF4gsn4shfRvHCGn',   //Checksum0             proof: ???
+    //  '1L8jrKEciyijzYr94FkxWv9w6PDJEUFDRV',   //Imaginary username    proof: ???
+    //  '1BNBPUBjBQ9W8Bmqn4P6smN6PcqVu2rwPV',   //zquestz               proof: ???
+    //  '15VpdK8JTnTXBye25FugQiU2f3VYx1nZTG',   //falkvinge             proof: ???
+    //  '16SzYapUsGQqTzVzJRpCuWn2A1m8oxjFZF',   //Tom Zander            proof: ???
 ]
 
 const dark_palette = [
