@@ -80,8 +80,12 @@ function setupPage() {
     });
 
     $('.container').not(':eq(0)')
-        .css('padding-right', '4em')
-        .css('padding-left', '4em');
+        .css('padding-right', '10em')
+        .css('padding-left', '10em');
+    var font_size = parseInt(settings.font_size);
+    $('.message').css('font-size', font_size+'px');
+    $('a.profile-link').css('font-size', '15px');
+    $('div.name').css('font-size', '15px');
     //dark mode changes
     $('body.dark').css('background', '#' + dark_palette[0]);
     $('body.dark nav.navbar').css('background', `linear-gradient(#${dark_palette[1]},#${dark_palette[2]})`);

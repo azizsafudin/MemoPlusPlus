@@ -22,13 +22,14 @@ const default_prefs = {
         'show_footer_control': true,
     },
     'tags': {
-        'enable_hashtags': true,
+        'enable_hashtags': false,
         'enable_usertags': false,
     },
     'font': {
         'url': '#',
         'name': '#'
-    }
+    },
+    'font_size': 26
 }
 
 const default_verified_list = [

@@ -120,6 +120,12 @@ function settings() {
 								</div>
 							</div>
 						</div>`
+        var settings_3 = `<div class="form-group row">
+					        <label for="font-size" class="col-sm-3 col-form-label">Default memo font size</label>
+					        <div class="col-sm-9">
+					            <input id="font-size" type="number" min="15" max="40" name="font-size" class="form-control" placeholder="Size in px between 15 and 40">
+					        </div>
+					    </div>`;
         var save_btn =
             `<br>
 						<div class="form-group">
@@ -131,12 +137,13 @@ function settings() {
 						</div>`
         var template_end = '</form>';
 
-        var template = template_start + settings_2 + settings_0 + settings_1 + save_btn + template_end;
+        var template = template_start + settings_2 + settings_3 + settings_0 + settings_1 + save_btn + template_end;
 
         $('#settings-form').after(template); //	add form after memo's default form
 
         $('[value="' + settings.default_posts + '"]').prop('checked', true); //	set checked based on current settings
         $('[value="' + settings.default_topics + '"]').prop('checked', true);
+        $('#font-size').val(settings.font_size);
         $('#show-footer-control').prop('checked', settings.general.show_footer_control);
         $('#enable-hashtags').prop('checked', settings.tags.enable_hashtags);
         $('#enable-usertags').prop('checked', settings.tags.enable_usertags);
@@ -148,6 +155,16 @@ function settings() {
             var posts = $('[name="default-posts"]:checked').val(); //	Get values from form.
             var topics = $('[name="default-topics"]:checked').val();
 
+            if(font_size = parseInt($('#font-size').val())){
+            	if(font_size > 40){
+            		settings.font_size = 40;
+            	}else if(font_size < 15){
+            		settings.font_size = 15;
+            	}
+            	else{
+            		settings.font_size = font_size;
+            	}
+            }
             settings.default_posts = posts;
             settings.default_topics = topics;
             settings.general.show_footer_control = $('#show-footer-control').prop('checked');
