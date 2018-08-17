@@ -120,6 +120,18 @@ function settings() {
 								</div>
 							</div>
 						</div>`
+        var settings_3 = `<div class="form-group row">
+					        <label for="posts-font-size" class="col-sm-3 col-form-label">Default posts font size</label>
+					        <div class="col-sm-9">
+					            <input id="posts-font-size" type="number" min="15" max="40" name="posts-font-size" class="form-control" placeholder="Size in px between 15 and 40">
+					        </div>
+					    </div>
+					    <div class="form-group row">
+					        <label for="topics-font-size" class="col-sm-3 col-form-label">Default topics font size</label>
+					        <div class="col-sm-9">
+					            <input id="topics-font-size" type="number" min="15" max="40" name="topics-font-size" class="form-control" placeholder="Size in px between 15 and 40">
+					        </div>
+					    </div>`;
         var save_btn =
             `<br>
 						<div class="form-group">
@@ -131,12 +143,14 @@ function settings() {
 						</div>`
         var template_end = '</form>';
 
-        var template = template_start + settings_2 + settings_0 + settings_1 + save_btn + template_end;
+        var template = template_start + settings_2 + settings_3 + settings_0 + settings_1 + save_btn + template_end;
 
         $('#settings-form').after(template); //	add form after memo's default form
 
         $('[value="' + settings.default_posts + '"]').prop('checked', true); //	set checked based on current settings
         $('[value="' + settings.default_topics + '"]').prop('checked', true);
+        $('#posts-font-size').val(settings.font_size.posts);
+        $('#topics-font-size').val(settings.font_size.topics);
         $('#show-footer-control').prop('checked', settings.general.show_footer_control);
         $('#enable-hashtags').prop('checked', settings.tags.enable_hashtags);
         $('#enable-usertags').prop('checked', settings.tags.enable_usertags);
@@ -148,6 +162,26 @@ function settings() {
             var posts = $('[name="default-posts"]:checked').val(); //	Get values from form.
             var topics = $('[name="default-topics"]:checked').val();
 
+            if(font_size = parseInt($('#posts-font-size').val())){
+            	if(font_size > 40){
+            		settings.font_size.posts = 40;
+            	}else if(font_size < 15){
+            		settings.font_size.posts = 15;
+            	}
+            	else{
+            		settings.font_size.posts = font_size;
+            	}
+            }
+			if(font_size = parseInt($('#topics-font-size').val())){
+            	if(font_size > 40){
+            		settings.font_size.topics = 40;
+            	}else if(font_size < 15){
+            		settings.font_size.topics = 15;
+            	}
+            	else{
+            		settings.font_size.topics = font_size;
+            	}
+            }
             settings.default_posts = posts;
             settings.default_topics = topics;
             settings.general.show_footer_control = $('#show-footer-control').prop('checked');
