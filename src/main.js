@@ -209,7 +209,7 @@ function mutationHandler() {
     };
     if (location.href.indexOf('/topic/') > -1) {
         var target = $('#all-posts')[0];
-        var observer = new WebKitMutationObserver(function(mutations) {
+        var observer = new MutationObserver(function(mutations) {
             updateView();
         });
         observer.observe(target, config);
