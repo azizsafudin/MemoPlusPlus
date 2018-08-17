@@ -29,7 +29,10 @@ const default_prefs = {
         'url': '#',
         'name': '#'
     },
-    'font_size': 26
+    'font_size': {
+        'posts' : 25,
+        'topics': 16
+    }
 }
 
 const default_verified_list = [
