@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 var notification_count = Number($('li.notifications a').first().text().replace(/\s/g, '')); //    global var to handle notifications
 var title = $(document).attr('title');
-var current_version = '0.5.5';
+var current_version = '0.5.7';
 
 function migrate() {
     var old_mute_list = localStorage.getItem('memo-list');

@@ -2,7 +2,7 @@
   "manifest_version": 2,
  
   "name": "Memo++",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "A memo.cash extension",
   "icons": 
   {
