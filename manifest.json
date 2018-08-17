@@ -19,15 +19,17 @@
     "assets/*.woff2"
   ],
   "content_scripts": [{
-    "css": ["styles.css"],
+    "css": ["styles.css", "assets/lib/toastr.min.css"],
     "js": [
-            "assets/js/jquery.min.js",
-            "assets/js/favico.min.js",
-            "assets/js/chainfeed.js",
+            "assets/lib/jquery.min.js",
+            "assets/lib/favico.min.js",
+            "assets/lib/chainfeed.js",
+            "assets/lib/toastr.min.js",
             "src/main.js", 
             "src/settings.js",
             "src/defaults.js",
             "src/getUpdates.js",
+            "src/changelog.js",
             "src/notifications.js",
             "src/search.js",
             "src/muteUsers.js",

@@ -3,7 +3,8 @@ $(document).ready(function() {
     settings(); //  prepare settings page, load settings
     setupPage(); // UI changes to be done only once
     loadTransactions(); //  get all txhash belonging to current user
-
+    showChangelog();
+    
     //  Everything here can be called more than once, to reapply the changes.
     muteUsers(); // main entry for preparing muting feature
     verifyUsers(); //   main entry for verifying user feature
@@ -26,6 +27,7 @@ $(document).ready(function() {
 
 var notification_count = Number($('li.notifications a').first().text().replace(/\s/g, '')); //    global var to handle notifications
 var title = $(document).attr('title');
+var current_version = '0.5.5';
 
 function migrate() {
     var old_mute_list = localStorage.getItem('memo-list');
@@ -37,7 +39,8 @@ function migrate() {
     setSettings(new_settings);
 
     // set current version
-    localStorage.setItem('installed-0.5.5', true);
+    if(!localStorage.getItem('installed-'+current_version)) localStorage.setItem('seen-update', false);
+    localStorage.setItem('installed-'+current_version, true);
 }
 /*
     Sets up UI changes and any other required changes
