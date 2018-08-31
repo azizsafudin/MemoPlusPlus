@@ -21,18 +21,26 @@ function showChangelog() {
     	toastr.clear();
 	}
     if (version && !seen) {
-        toastr.success(changelog, '<b>New memo++ features! (0.5.7)</b>');    
-        toastr.info('FYI: Proofs of default verified accounts can be found on Github!');
-        toastr.info('Do suggest features or report bugs by making an issue on Github or contacting me (modulus) on memo/twitter.');
+        toastr.success(changelog, '<b>Memo++ updates (0.5.8)</b>');    
+        toastr.info('Suggest features or report bugs by making an issue on Github or contacting me (modulus) on memo/twitter.');
     }
 }
 
-const changelog =
-    `<ul>
-    	<li>Set default font size of posts.</li>
-    	<li>Search posts and topics.</li>
-    	<li>Browse latest hashtags.</li>
-    	<li>Get notified of @mentions (only when tab is open).</li>
-    	<li>More options in settings page.</li>
-    	<li>Minor UI tweaks.</li>
-    </ul>`
+const changelog = 
+`<ul>
+<li>Minor UI fixes for latest memo.cash site updates</li>
+<li>Fixed "recent hashtags" not showing</li>
+<li>Fixed verify user button not showing correctly.</li>
+<li>Made mute buttons look less intrusive</li>
+</ul>
+`
+
+// const changelog =
+//     `<ul>
+//     	<li>Set default font size of posts.</li>
+//     	<li>Search posts and topics.</li>
+//     	<li>Browse latest hashtags.</li>
+//     	<li>Get notified of @mentions (only when tab is open).</li>
+//     	<li>More options in settings page.</li>
+//     	<li>Minor UI tweaks.</li>
+//     </ul>`

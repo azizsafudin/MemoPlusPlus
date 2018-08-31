@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 var notification_count = Number($('li.notifications a').first().text().replace(/\s/g, '')); //    global var to handle notifications
 var title = $(document).attr('title');
-var current_version = '0.5.7';
+var current_version = '0.5.8';
 
 function migrate() {
     var old_mute_list = localStorage.getItem('memo-list');
@@ -53,8 +53,8 @@ function setupPage() {
 
     //  Footer control stuff
     $('body').prepend(`<div class="footer-control">
-                            <button id="toTop" class="btn btn-success" title="Go to top">Back to top</button>
-                            <button id="showFooter" class="btn btn-primary" title="Show footer">
+                            <button id="toTop" class="btn btn-success" style="border-top-left-radius: 1.5em; border-bottom-left-radius: 1.5em" title="Go to top">Back to top</button>
+                            <button id="showFooter" style="border-top-right-radius: 1.5em; border-bottom-right-radius: 1.5em" class="btn btn-primary" title="Show footer">
                                 <span class="glyphicon glyphicon-menu-hamburger"></span>
                             </button></div>`);
 
@@ -107,52 +107,45 @@ function setupPage() {
         .before(`<li><a href="/">${dashboard}</a></li>`);
 
     // Nav displaying "ranked", "all", "personalized", etc.
-    $('p.posts-nav a')
-        .addClass('btn btn-default btn-md') //  make nav links into buttons
-        .css('text-decoration', 'none')
-        .css('margin', 0);
-    $('p.posts-nav a, div.dashboard-actions a')
-        .wrapAll('<div class="btn-group">')
-    $('p.posts-nav a, div.dashboard-actions a').first()
-        .css('border-bottom-left-radius', '1.5em') //   make the first and last buttons rounded on the edges
-        .css('border-top-left-radius', '1.5em');
-    $('p.posts-nav a, div.dashboard-actions a').last()
-        .css('border-bottom-right-radius', '1.5em')
-        .css('border-top-right-radius', '1.5em');
-    $('p.posts-nav a.sel')
-        .addClass('btn-primary')
-        .removeClass('btn-default');
-    $('p.posts-nav a').not('.sel')
-        .css('font-weight', '200')
-        .mouseover(function(e) { // mouseover effect on posts-nav bar
-            $(this).toggleClass('btn-primary btn-default');
-        })
-        .mouseout(function(e) {
-            $(this).toggleClass('btn-default btn-primary');
-        });
-    $('div.pagination a')
-        .css('text-decoration', 'none')
-        .addClass('btn btn-sm')
-        .css('margin', 0)
-        .not('.sel')
-        .mouseover(function(e) { // set mouseover to highlight buttons
-            $(this).addClass('btn-default');
-        })
-        .mouseout(function(e) {
-            $(this).removeClass('btn-default');
-        });
-    $('div.pagination a.sel')
-        .css('font-weight', '700')
-        .addClass('btn-default')
+    // $('p.posts-nav a')
+    //     .addClass('btn btn-default btn-md') //  make nav links into buttons
+    //     .css('text-decoration', 'none')
+    //     .css('margin', 0);
+    // $('p.posts-nav a, div.dashboard-actions a')
+    //     .wrapAll('<div class="btn-group">')
+    // $('p.posts-nav a, div.dashboard-actions a').first()
+    //     .css('border-bottom-left-radius', '1.5em') //   make the first and last buttons rounded on the edges
+    //     .css('border-top-left-radius', '1.5em');
+    // $('p.posts-nav a, div.dashboard-actions a').last()
+    //     .css('border-bottom-right-radius', '1.5em')
+    //     .css('border-top-right-radius', '1.5em');
+    // $('p.posts-nav a.sel')
+    //     .addClass('btn-primary')
+    //     .removeClass('btn-default');
+    // $('p.posts-nav a').not('.sel')
+    //     .css('font-weight', '200')
+    //     .mouseover(function(e) { // mouseover effect on posts-nav bar
+    //         $(this).toggleClass('btn-primary btn-default');
+    //     })
+    //     .mouseout(function(e) {
+    //         $(this).toggleClass('btn-default btn-primary');
+    //     });
+    // $('div.pagination a')
+    //     .css('text-decoration', 'none')
+    //     .addClass('btn btn-sm')
+    //     .css('margin', 0)
+    //     .not('.sel')
+    //     .mouseover(function(e) { // set mouseover to highlight buttons
+    //         $(this).addClass('btn-default');
+    //     })
+    //     .mouseout(function(e) {
+    //         $(this).removeClass('btn-default');
+    //     });
+    // $('div.pagination a.sel')
+    //     .css('font-weight', '700')
+    //     .addClass('btn-default')
 
-    $('.post.rounded, .post').find('.btn')
-        .removeClass('btn-default') //  make all buttons not have an outline
-        .mouseover(function(e) { // set mouseover to highlight buttons in posts
-            $(this).addClass('btn-default');
-        })
-        .mouseout(function(e) {
-            $(this).removeClass('btn-default');
-        });
+    $('ul.pagination li').children().css('border', 'none');   
 
     //  Make changes to UI based on settings.
     $('nav a[href*="posts"]').first().attr('href', base_url + urls.posts[settings.default_posts]);
@@ -164,16 +157,27 @@ function setupPage() {
 */
 function generalChanges() {
     var settings = getSettings();
-    $('.btn')
-        .not('#memo-new')
-        .not('p.posts-nav a')
-        .not('.pagination a')
-        .not('div.dashboard-actions a')
-        .css('border-radius', '1.5em')
-        .css('outline', 'none'); // make all buttons cute and rounded
-    $('input, select').css('border-radius', '1.5em'); //    make all inputs rounded and cute
-    $('textarea').css('border-radius', '1em'); //   make all textareas slightly rounded and cute
+    // $('.btn')
+    //     .not('#memo-new')
+    //     .not('p.posts-nav a')
+    //     .not('.pagination a')
+    //     .not('div.dashboard-actions a')
+    //     .not('form#posts-search-form input')
+    //     .css('border-radius', '1.5em')
+    //     .css('outline', 'none'); // make all buttons cute and rounded
+    // $('input, select').css('border-radius', '1.5em'); //    make all inputs rounded and cute
+    // $('textarea').css('border-radius', '1em'); //   make all textareas slightly rounded and cute
+    $('.post.rounded, .post').find('.btn')
+        .removeClass('btn-default') //  make all buttons not have an outline
+        .mouseover(function(e) { // set mouseover to highlight buttons in posts
+            $(this).addClass('btn-default');
+        })
+        .mouseout(function(e) {
+            $(this).removeClass('btn-default');
+        });
 
+    $('form#posts-search-form, form#topic-search-form').hide();
+    $('.topics-index-head').addClass('pull-right');
     if (location.href.indexOf('/topic/') > -1) {
         $('.message').css('font-size', settings.font_size.topics + 'px');
     } else {
