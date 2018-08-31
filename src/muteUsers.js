@@ -7,27 +7,36 @@ function muteUsers() {
     addMuteButton();
     hideMutedUsers();
 
-    $('button.memo-mute').click(function(e) { //	Handle mute button click.
+    $('a.memo-mute').click(function(e) { //	Handle mute button click.
         e.preventDefault();
         // var addr = getUserAddress($(this).siblings('a.profile'));
         var addr = $(this).siblings('span.mini-profile-name').data('profile-hash');
         mute(addr);
     });
 
-    $('button.memo-unmute').click(function(e) { //	Handle unmute button click.
+    $('a.memo-unmute').click(function(e) { //	Handle unmute button click.
         e.preventDefault();
         var addr = getUserAddress($(this).siblings('span.memo-addr').find('a').first());
         unmute(addr);
     });
+    $('a.memo-mute')
+        .mouseover(function(e) { // set mouseover to highlight buttons in posts
+            $(this).addClass('btn-danger');
+            $(this).removeCLass('btn-default');
+        })
+        .mouseout(function(e) {
+            $(this).removeClass('btn-danger');
+            $(this).addCLass('btn-default');
+        });
 }
 
 function addMuteButton() {
-    const mute_btn = '<button type="button" class="btn btn-danger btn-xs memo-mute" font-size:0.7em;">Mute</button>';
+    const mute_btn = '<a class="btn btn-default btn-xs memo-mute" font-size:0.7em;">Mute</button>';
     $('div.name').each(function(index) {
         var addr = getUserAddress($(this).find('a.profile, .memo-addr a').first());
-        if (!isMuted(addr) && $(this).children('button.memo-mute').length === 0) { //	only add mute button if it doesn't already exist and user not muted.
+        if (!isMuted(addr) && $(this).children('a.memo-mute').length === 0) { //	only add mute button if it doesn't already exist and user not muted.
             $(this).append(mute_btn);
-            $(this).find('.memo-mute').attr('title', "Mute address:" + addr);
+            $(this).find('.memo-mute').attr('title', "Mute address: " + addr);
         }
     });
 }
@@ -54,7 +63,7 @@ function setMuteList(list) {
 function hideMutedUsers() {
     const hidden_0 = '<div class="post-header memo-muted-user"><p class="name" style="padding:0.5em;"><span class="memo-addr">';
     const hidden_1 = '</span><span> has been muted.</span>';
-    const unmute_btn = '<button type="button" class="memo-unmute btn btn-info btn-xs" style="margin-left:1em; font-size:0.7em;">Unmute</button>';
+    const unmute_btn = '<a class="memo-unmute btn btn-info btn-xs" style="margin-left:1em; font-size:0.7em;">Unmute</button>';
     const hidden_2 = '</p></div>';
     $('div.post, div.feed-item-post').each(function(index) {
         var profile = $(this).find('span.mini-profile-name');

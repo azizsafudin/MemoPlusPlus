@@ -31,6 +31,7 @@ const changelog =
 <li>Minor UI fixes for latest memo.cash site updates</li>
 <li>Fixed "recent hashtags" not showing</li>
 <li>Fixed verify user button not showing correctly.</li>
+<li>Made mute buttons look less intrusive</li>
 </ul>
 `
 
