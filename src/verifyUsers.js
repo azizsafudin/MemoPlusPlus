@@ -2,9 +2,7 @@ const verified_icon = '<span class="glyphicon glyphicon-ok memo-verified" title=
 
 function verifyUsers() {
     if (location.href.indexOf('/profile') > -1) {
-        var url = location.href;
-        var array = url.split('/');
-        var address = array[array.length - 1];
+        var address = location.pathname.split("/").pop();
 
         addVerifyButton();
         $('.memo-verify').click(function(e) {
@@ -29,9 +27,7 @@ function verifyUsers() {
 
 
 function addVerifyButton() {
-    var url = location.href;
-    var array = url.split('/');
-    var address = array[array.length - 1];
+    var address = location.pathname.split("/").pop();
 
     var context = $('div.title');
     //Only add button if button isn't already there.

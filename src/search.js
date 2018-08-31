@@ -24,7 +24,7 @@ function searchHandler() {
         main.prepend('<div><h2 class="center" style="margin-bottom:1em;">' + title + '</h2></div>');
         $('div.threads').append(loading_msg);
 
-        getRecentHashtags(20, function(tags) {
+        getRecentHashtags(30, function(tags) {
             var list = '';
             for (var i = 0; i < tags.length; i++) {
                 list += `<a href="/hashtag/${tags[i].substring(1)}">${tags[i]}</a> `;
@@ -81,7 +81,7 @@ function searchHandler() {
 function addSearchBar() {
     const bar = `<form class="navbar-form navbar-right">
                 <div class="form-group input-group-sm">
-                <input type="text" class="form-control" placeholder="Search" id="search-bar">
+                <input type="text" class="form-control" placeholder="Search memo" id="search-bar">
                 </div></form>`
     $('div.navbar-collapse').append(bar);
     $('#search-bar').on('keyup', function(e) {
@@ -191,7 +191,13 @@ function getRecentHashtags(count, callback) {
         var array = [];
         for (var i = 0; i < r.confirmed.length; i++) {
             var result = r.confirmed[i].b2.match(/#(\w*[0-9a-zA-Z]+\w*[0-9a-zA-Z])/g)
-            array.push(...result);
+            if(result !== null){
+                // array.push(...result);
+                array = [...new Set([...array ,...result])];
+                // var array = array.concat(result.filter(function (item) {
+                //     return array.indexOf(item) < 0;
+                // }));
+            }
             if (array.length > count) {
                 array.slice(0, count);
                 break;
@@ -199,7 +205,7 @@ function getRecentHashtags(count, callback) {
         }
         callback(array);
     }).catch(function(err) {
-        alert('Search error');
+        alert('Error getting memos');
         console.error(err);
     });
 }
